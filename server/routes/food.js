@@ -4,7 +4,6 @@ const auth = require("../middleware/verify-token");
 
 //POST request
 router.post("/food", async (req, res) => {
-  console.log(req);
   try {
     const food = new Food();
     food.name = req.body.name;
@@ -25,7 +24,7 @@ router.post("/food", async (req, res) => {
   }
 });
 
-router.get("/foods", async (req, res) => {
+router.get("/foods", auth, async (req, res) => {
   try {
     let foods = await Food.find({});
 

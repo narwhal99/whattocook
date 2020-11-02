@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
-module.exports = function (req, res, next) {
+module.exports = async function (req, res, next) {
   let token = req.headers["x-access-token"] || req.headers["authorization"];
   let checkBearer = "Bearer ";
 
@@ -8,14 +9,14 @@ module.exports = function (req, res, next) {
     if (token.startsWith(checkBearer)) {
       token = token.slice(checkBearer.length, token.length);
     }
-    jwt.verify(token, process.env.TOKENKEY, (err, decoded) => {
+    jwt.verify(token, process.env.TOKENKEY, async (err, decoded) => {
       if (err) {
         res.json({
           success: false,
           message: "Failed to authenticate",
         });
       } else {
-        req.decoded = decoded;
+        req.user = await User.findOne({ _id: decoded._id });
         next();
       }
     });

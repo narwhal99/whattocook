@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/user");
 
-const jws = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 router.post("/user/signup", async (req, res) => {
   if (!req.body.email || !req.body.password) {
@@ -16,7 +16,7 @@ router.post("/user/signup", async (req, res) => {
 
       await user.save();
 
-      let token = jws.sign(user.toJSON(), process.env.TOKENKEY, {
+      let token = jwt.sign(user.toJSON(), process.env.TOKENKEY, {
         expiresIn: 604800, // 1 week
       });
 
@@ -31,6 +31,38 @@ router.post("/user/signup", async (req, res) => {
         message: err.message,
       });
     }
+  }
+});
+
+router.post("/user/login", async (req, res) => {
+  try {
+    let foundUser = await User.findOne({ email: req.body.email });
+    if (!foundUser) {
+      res.status(403).json({
+        success: false,
+        message: "Authentcation failed, User not found.",
+      });
+    } else {
+      if (foundUser.comparePassword(req.body.password)) {
+        let token = jwt.sign(foundUser.toJSON(), process.env.TOKENKEY, {
+          expiresIn: 604800,
+        });
+        res.json({
+          success: true,
+          token: token,
+        });
+      } else {
+        res.status(403).json({
+          success: false,
+          message: "Authentication failed, Wong Password!",
+        });
+      }
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 });
 
