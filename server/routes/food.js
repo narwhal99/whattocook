@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Food = require("../models/food");
 const auth = require("../middleware/verify-token");
+const authGroup = require("../middleware/verify-group");
 
 //POST request
 router.post("/food", async (req, res) => {
@@ -24,7 +25,7 @@ router.post("/food", async (req, res) => {
   }
 });
 
-router.get("/foods", auth, async (req, res) => {
+router.get("/foods", auth, authGroup, async (req, res) => {
   try {
     let foods = await Food.find({});
 
