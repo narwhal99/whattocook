@@ -25,6 +25,12 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
+UserSchema.methods.toJSON = function () {
+  const userObj = this.toObject();
+  delete userObj.password;
+  return userObj;
+};
+
 UserSchema.pre("save", function (next) {
   let user = this;
   if (this.isModified("password") || this.isNew) {
@@ -55,6 +61,12 @@ UserSchema.virtual("group", {
   localField: "_id",
   foreignField: "members",
   justOne: true,
+});
+
+UserSchema.virtual("recipe", {
+  ref: "Recipe",
+  localField: "_id",
+  foreignField: "owner",
 });
 
 module.exports = mongoose.model("User", UserSchema);

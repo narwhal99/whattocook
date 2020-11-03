@@ -2,16 +2,17 @@ const router = require("express").Router();
 const Group = require("../models/group");
 const auth = require("../middleware/verify-token");
 
-router.post("/group", async (req, res) => {
+router.post("/group", auth, async (req, res) => {
   try {
     const group = new Group();
     group.name = req.body.name;
+    group.members.push(req.user._id);
 
     await group.save();
 
     res.json({
       success: true,
-      message: "Succesfully created a group",
+      message: "Succesfully created your group!",
     });
   } catch (err) {
     res.status(500).json({

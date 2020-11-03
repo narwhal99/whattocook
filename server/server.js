@@ -29,7 +29,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const foodRoutes = require("./routes/food");
 const groupRoutes = require("./routes/group");
 const userRoutes = require("./routes/user");
+const recipeRoutes = require("./routes/recipe");
 
+app.use("/api", recipeRoutes);
 app.use("/api", foodRoutes);
 app.use("/api", groupRoutes);
 app.use("/api", userRoutes);
