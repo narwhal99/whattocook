@@ -10,7 +10,7 @@ router.post("/group", auth, async (req, res) => {
 
     await group.save();
 
-    res.json({
+    res.status(201).json({
       success: true,
       message: "Succesfully created your group!",
     });

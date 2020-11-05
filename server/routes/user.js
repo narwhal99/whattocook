@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/user");
-
+const auth = require("../middleware/verify-token");
 const jwt = require("jsonwebtoken");
 
 router.post("/user/signup", async (req, res) => {
@@ -20,7 +20,7 @@ router.post("/user/signup", async (req, res) => {
         expiresIn: 604800, // 1 week
       });
 
-      res.json({
+      res.status(201).json({
         success: true,
         token: token,
         message: "Succesfully created a user",
@@ -58,6 +58,20 @@ router.post("/user/login", async (req, res) => {
         });
       }
     }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+router.get("/user/me", auth, async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      user: req.user,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,

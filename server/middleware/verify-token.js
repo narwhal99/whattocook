@@ -11,7 +11,7 @@ module.exports = async function (req, res, next) {
     }
     jwt.verify(token, process.env.TOKENKEY, async (err, decoded) => {
       if (err) {
-        res.json({
+        res.status(403).json({
           success: false,
           message: "Failed to authenticate",
         });
@@ -21,7 +21,7 @@ module.exports = async function (req, res, next) {
       }
     });
   } else {
-    res.json({
+    res.status(403).json({
       success: false,
       message: "No token provided",
     });

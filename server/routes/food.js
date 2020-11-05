@@ -16,7 +16,7 @@ router.post("/food", auth, authGroup, async (req, res) => {
     await req.user.group.save();
     await food.save();
 
-    res.json({
+    res.status(201).json({
       success: true,
       message: "Successfully created a new food",
     });
