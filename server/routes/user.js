@@ -47,7 +47,7 @@ router.post("/user/login", async (req, res) => {
         let token = jwt.sign(foundUser.toJSON(), process.env.TOKENKEY, {
           expiresIn: 604800,
         });
-        res.json({
+        res.status(201).json({
           success: true,
           token: token,
         });
