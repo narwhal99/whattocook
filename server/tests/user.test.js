@@ -15,8 +15,7 @@ test("Should signup a new user ", async () => {
   const resp = await request(app)
     .post("/api/user/signup")
     .send({
-      firstName: "Andrej",
-      lastName: "Molnár",
+      fullName:"Molnár Andrej",
       email: "molnarandre@email.com",
       password: "secretPW31!",
     })
@@ -56,5 +55,5 @@ test("Should get user profile", async () => {
 });
 
 test("Should not get profile for unauthenticated user", async () => {
-  await request(app).get("/api/user/me").send().expect(403);
+  await request(app).get("/api/user/me").send().expect(401);
 });

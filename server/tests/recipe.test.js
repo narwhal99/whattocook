@@ -38,7 +38,7 @@ test("Should not create a recipe without auth.", async () => {
       preparation: "Mosst még ételt",
       description: "Főzöd",
     })
-    .expect(403);
+    .expect(401);
 });
 
 test("Should able to edit recipe with auth", async () => {
@@ -74,5 +74,5 @@ test("Should get my recipes with auth", async () => {
 });
 
 test("Should not get recipes without auth", async () => {
-  await request(app).get("/api/recipes").send().expect(403);
+  await request(app).get("/api/recipes").send().expect(401);
 });

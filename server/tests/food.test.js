@@ -45,5 +45,5 @@ test("Should not create food without authentication", async () => {
       quantity: "9",
       unit: "kg",
     })
-    .expect(403);
+    .expect(401);
 });

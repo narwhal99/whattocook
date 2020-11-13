@@ -5,12 +5,13 @@ const jwt = require("jsonwebtoken");
 
 router.post("/user/signup", async (req, res) => {
   if (!req.body.email || !req.body.password) {
-    res.json({ sucees: false, message: "Please enter your email or password" });
+    res
+      .status(403)
+      .json({ sucees: false, message: "Please enter your email or password" });
   } else {
     try {
       const user = new User();
-      user.firstName = req.body.firstName;
-      user.lastName = req.body.lastName;
+      user.fullName = req.body.fullName;
       user.email = req.body.email;
       user.password = req.body.password;
 
@@ -35,34 +36,40 @@ router.post("/user/signup", async (req, res) => {
 });
 
 router.post("/user/login", async (req, res) => {
-  try {
-    let foundUser = await User.findOne({ email: req.body.email });
-    if (!foundUser) {
-      res.status(403).json({
-        success: false,
-        message: "Authentcation failed, User not found.",
-      });
-    } else {
-      if (foundUser.comparePassword(req.body.password)) {
-        let token = jwt.sign(foundUser.toJSON(), process.env.TOKENKEY, {
-          expiresIn: 604800,
-        });
-        res.status(201).json({
-          success: true,
-          token: token,
-        });
-      } else {
+  if (!req.body.email || !req.body.password) {
+    res
+      .status(403)
+      .json({ sucees: false, message: "Please enter your email or password" });
+  } else {
+    try {
+      let foundUser = await User.findOne({ email: req.body.email });
+      if (!foundUser) {
         res.status(403).json({
           success: false,
-          message: "Authentication failed, Wong Password!",
+          message: "Authentcation failed, User not found.",
         });
+      } else {
+        if (foundUser.comparePassword(req.body.password)) {
+          let token = jwt.sign(foundUser.toJSON(), process.env.TOKENKEY, {
+            expiresIn: 604800,
+          });
+          res.status(201).json({
+            success: true,
+            token: token,
+          });
+        } else {
+          res.status(403).json({
+            success: false,
+            message: "Authentication failed, Wong Password!",
+          });
+        }
       }
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: err.message,
+      });
     }
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
   }
 });
 

@@ -30,7 +30,7 @@ test("Should not create a group without authentication", async () => {
     .send({
       name: "Ez egy test csoport",
     })
-    .expect(403);
+    .expect(401);
 });
 
 test("Should join to a group", async () => {
@@ -48,7 +48,7 @@ test("Should not join to a group without authentication", async () => {
   await request(app)
     .put("/api/group/join/" + groupOne._id)
     .send()
-    .expect(403);
+    .expect(401);
   const group = await Group.findOne({ _id: groupOne._id });
   expect(group.members).not.toBe();
 });

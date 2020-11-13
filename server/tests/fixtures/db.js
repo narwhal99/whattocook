@@ -7,8 +7,7 @@ const Recipe = require("../../models/recipe");
 
 //User withhout group
 const userOne = {
-  firstName: "Without",
-  lastName: "Group",
+  fullName: "Without Group",
   email: "withoutgroup@example.com",
   password: "password321",
 };
@@ -20,8 +19,7 @@ const groupOne = {
 //User with group
 const userTwo = {
   _id: new mongoose.Types.ObjectId(),
-  firstName: "With",
-  lastName: "Group",
+  fullName: "With Group",
   email: "withgroup@example.com",
   password: "password321",
 };
