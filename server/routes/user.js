@@ -24,6 +24,7 @@ router.post("/user/signup", async (req, res) => {
       res.status(201).json({
         success: true,
         token: token,
+        user: user,
         message: "Succesfully created a user",
       });
     } catch (err) {
@@ -53,9 +54,12 @@ router.post("/user/login", async (req, res) => {
           let token = jwt.sign(foundUser.toJSON(), process.env.TOKENKEY, {
             expiresIn: 604800,
           });
+          await foundUser.populate("group").execPopulate();
           res.status(201).json({
             success: true,
             token: token,
+            user: foundUser,
+            group: foundUser.group,
           });
         } else {
           res.status(403).json({
@@ -75,9 +79,11 @@ router.post("/user/login", async (req, res) => {
 
 router.get("/user/me", auth, async (req, res) => {
   try {
+    await req.user.populate("group").execPopulate();
     res.json({
       success: true,
       user: req.user,
+      group: req.user.group,
     });
   } catch (err) {
     res.status(500).json({

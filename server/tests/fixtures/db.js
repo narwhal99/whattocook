@@ -11,9 +11,10 @@ const userOne = {
   email: "withoutgroup@example.com",
   password: "password321",
 };
+
+//Dont have member
 const groupOne = {
   _id: new mongoose.Types.ObjectId(),
-  name: "Test csopi",
 };
 
 //User with group
@@ -23,9 +24,10 @@ const userTwo = {
   email: "withgroup@example.com",
   password: "password321",
 };
+
+//Already have member
 const groupTwo = {
   _id: new mongoose.Types.ObjectId(),
-  name: "Already in",
   members: [userTwo._id],
 };
 

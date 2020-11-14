@@ -7,6 +7,8 @@ import addFood from "../components/Food/add";
 import Login from "../views/Login";
 import store from "../store";
 import Registration from "../views/Register";
+import Group from "../views/Group";
+import JoinGroup from "../components/Group/join";
 
 Vue.use(VueRouter);
 
@@ -25,6 +27,9 @@ let router = new VueRouter({
         { path: "", component: renderFood },
         { path: "add", component: addFood },
       ],
+      meta: {
+        needGroup: true,
+      },
     },
     {
       path: "/login",
@@ -40,6 +45,11 @@ let router = new VueRouter({
         noAuth: true,
       },
     },
+    {
+      path: "/group",
+      component: Group,
+      children: [{ path: "join", component: JoinGroup }],
+    },
   ],
 });
 
@@ -50,6 +60,12 @@ router.beforeEach((to, from, next) => {
       return;
     }
     next("/");
+  } else if (to.matched.some((record) => record.meta.needGroup)) {
+    if (store.getters.haveGroup) {
+      next();
+      return;
+    }
+    next("/group/join");
   } else {
     next();
   }

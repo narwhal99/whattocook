@@ -11,11 +11,17 @@ export default new Vuex.Store({
     errorMsg: null,
     loading: false,
     foods: null,
+    user: {
+      profile: {},
+      group: {},
+    },
   },
   getters: {
     isLoggedIn: (state) => !!state.token,
+    haveGroup: (state) => !!state.user.group,
     errorMsg: (state) => state.errorMsg,
     foods: (state) => state.foods,
+    user: (state) => state.user,
   },
   mutations: {
     SET_LOADING(state) {
@@ -28,7 +34,21 @@ export default new Vuex.Store({
       state.foods = foods;
     },
     AUTH_LOGOUT(state) {
-      (state.loading = false), (state.token = "");
+      state.loading = false;
+      state.token = "";
+    },
+    AUTH_LOGIN(state, { user, group }) {
+      state.loading = false;
+      state.user.profile = user;
+      state.user.group = group;
+    },
+    AUTH_REGISTER(state, user) {
+      state.loading = false;
+      state.user = user;
+    },
+    SET_USER(state, { user, group }) {
+      state.user.profile = user;
+      state.user.group = group;
     },
   },
   actions: {
@@ -38,22 +58,35 @@ export default new Vuex.Store({
         const resp = await connectServices.regSubmit(user);
         const token = resp.data.token;
         localStorage.setItem("token", token);
-        commit("empty");
+        commit("AUTH_REGISTER", resp.data.user);
         throw resp.data;
       } catch (err) {
         commit("SET_ERROR", err.response.data.message);
       }
     },
-    async loginSubmit({ commit }, user) {
+    async loginSubmit({ commit }, userData) {
       commit("SET_LOADING");
       try {
-        const resp = await connectServices.loginSubmit(user);
+        const resp = await connectServices.loginSubmit(userData);
         const token = resp.data.token;
         localStorage.setItem("token", token);
+        const user = resp.data.user;
+        const group = resp.data.group;
+        commit("AUTH_LOGIN", { user, group });
         return resp;
       } catch (err) {
         commit("SET_ERROR", err.response.data.message);
         return err;
+      }
+    },
+    async getMyUser({ commit }) {
+      try {
+        const resp = await connectServices.getMyUser();
+        const group = resp.data.group;
+        const user = resp.data.user;
+        commit("SET_USER", { user, group });
+      } catch (err) {
+        console.log(err);
       }
     },
     logout({ commit }) {

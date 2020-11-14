@@ -15,12 +15,13 @@ test("Should signup a new user ", async () => {
   const resp = await request(app)
     .post("/api/user/signup")
     .send({
-      fullName:"Molnár Andrej",
+      fullName: "Molnár Andrej",
       email: "molnarandre@email.com",
       password: "secretPW31!",
     })
     .expect(201);
   expect(resp.body.success).toBe(true);
+  expect(resp.body.user._id).not.toBe(undefined);
 
   // Assert that the database was changed correctly
   const user = await User.findOne({ email: "molnarandre@email.com" });
@@ -36,6 +37,7 @@ test("Should login existing user", async () => {
     password: userOne.password,
   });
   expect(resp.body.success).toBe(true);
+  expect(resp.body.user).not.toBe(undefined);
 });
 
 test("Should not login with wrong pw", async () => {

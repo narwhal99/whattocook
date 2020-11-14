@@ -7,6 +7,9 @@ export default {
   loginSubmit(user) {
     return Api.post("user/login", user);
   },
+  getMyUser() {
+    return Api.get("user/me");
+  },
   getFoods() {
     return Api.get("/foods");
   },

@@ -1,15 +1,16 @@
 <template>
-  <v-row align="center" style="backgroundColor:#ECE5D7;">
-    <v-col align="center">
+  <v-row align="center" justify="center" style="backgroundColor:#ECE5D7;">
+    <v-col align="center" cols="10">
       <v-row>
         <v-col>
-          <p>Username</p>
+          <h2>{{ user.profile.fullName }}</h2>
         </v-col>
       </v-row>
       <v-row>
         <v-col align="center" class="pa-0 ma-0;">
           <v-hover v-slot="{ hover }">
             <v-btn
+              outlined
               :elevation="hover ? 16 : 0"
               text
               to="/food"
@@ -22,6 +23,7 @@
         <v-col align="center" class="pa-0 ma-0">
           <v-hover v-slot="{ hover }">
             <v-btn
+              outlined
               :elevation="hover ? 16 : 0"
               text
               to="/food/add"
@@ -34,6 +36,7 @@
         <v-col align="center" class="pa-0 ma-0">
           <v-hover v-slot="{ hover }">
             <v-btn
+              outlined
               :elevation="hover ? 16 : 0"
               text
               to="/recipe"
@@ -46,6 +49,7 @@
         <v-col align="center" class="pa-0 ma-0">
           <v-hover v-slot="{ hover }">
             <v-btn
+              outlined
               :elevation="hover ? 16 : 0"
               text
               to="/recipe/add"
@@ -56,18 +60,48 @@
           </v-hover>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col align="center" class="pa-0 ma-0" v-if="!haveGroup">
+          <v-hover v-slot="{ hover }">
+            <v-btn
+              outlined
+              :elevation="hover ? 16 : 0"
+              text
+              to="/group/join"
+              width="100%"
+              height="250px"
+              >Join / Create Group</v-btn
+            >
+          </v-hover>
+        </v-col>
+        <v-col align="center" class="pa-0 ma-0" v-if="haveGroup">
+          <v-hover v-slot="{ hover }">
+            <v-btn
+              outlined
+              :elevation="hover ? 16 : 0"
+              text
+              to="/group"
+              width="100%"
+              height="250px"
+              >Show my Group</v-btn
+            >
+          </v-hover>
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters(["user", "haveGroup"]),
+  },
+};
 </script>
-
 <style scoped>
 .v-btn {
-  border: 1px solid black;
-  border-right: 0px;
   border-radius: 0%;
 }
 </style>
