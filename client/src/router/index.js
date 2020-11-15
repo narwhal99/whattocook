@@ -48,7 +48,13 @@ let router = new VueRouter({
     {
       path: "/group",
       component: Group,
-      children: [{ path: "join", component: JoinGroup }],
+      children: [
+        {
+          name: "JoinGroup",
+          path: "join",
+          component: JoinGroup,
+        },
+      ],
     },
   ],
 });
@@ -66,6 +72,12 @@ router.beforeEach((to, from, next) => {
       return;
     }
     next("/group/join");
+  } else if (to.name === "JoinGroup") {
+    if (store.getters.haveGroup) {
+      next("/group");
+      return;
+    }
+    next();
   } else {
     next();
   }

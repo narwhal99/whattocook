@@ -22,11 +22,18 @@
 
 <script>
 export default {
-  methods:{
-    createGroupSubmit(){
-      console.log('test')
-    }
-  }
+  methods: {
+    async createGroupSubmit() {
+      try {
+        const resp = await this.$store.dispatch("createGroup");
+        if (resp.status === 201) {
+          this.$router.go();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
 };
 </script>
 

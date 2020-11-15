@@ -52,7 +52,10 @@ export default {
         password: this.password,
       };
       try {
-        await this.$store.dispatch("regSubmit", user);
+        const resp = await this.$store.dispatch("regSubmit", user);
+        if (resp.status === 201) {
+          this.$router.go();
+        }
       } catch (err) {
         console.log(err);
       }

@@ -13,4 +13,7 @@ export default {
   getFoods() {
     return Api.get("/foods");
   },
+  createGroup() {
+    return Api.post("/group");
+  },
 };

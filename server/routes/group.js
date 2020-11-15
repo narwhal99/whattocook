@@ -4,15 +4,30 @@ const auth = require("../middleware/verify-token");
 
 router.post("/group", auth, async (req, res) => {
   try {
-    const group = new Group();
-    group.name = req.body.name;
-    group.members.push(req.user._id);
+    await req.user.populate("group").execPopulate(async function (err, user) {
+      if (err) {
+        res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      } else if (user.group === null) {
+        const group = new Group();
+        group.name = req.body.name;
+        group.members.push(req.user._id);
 
-    await group.save();
+        await group.save();
 
-    res.status(201).json({
-      success: true,
-      message: "Succesfully created your group!",
+        res.status(201).json({
+          success: true,
+          group: group,
+          message: "Succesfully created your group!",
+        });
+      } else {
+        res.status(403).json({
+          success: false,
+          message: "You are already in a group!",
+        });
+      }
     });
   } catch (err) {
     res.status(500).json({

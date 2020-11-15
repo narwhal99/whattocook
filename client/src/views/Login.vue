@@ -18,7 +18,7 @@
             ></v-text-field>
             <p v-if="errorMsg" class="red--text">{{ errorMsg }}</p>
             <v-col jusitfy="center" align="center">
-              <p>You dont have a user? Go to..</p>
+              <p>You dont have a user? Create..</p>
               <v-btn to="/registration">Registration</v-btn>
             </v-col>
           </v-card-text>

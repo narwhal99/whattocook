@@ -46,6 +46,10 @@ export default new Vuex.Store({
       state.loading = false;
       state.user = user;
     },
+    AUTH_GROUP(state, group) {
+      state.loading = false;
+      state.user.group = group;
+    },
     SET_USER(state, { user, group }) {
       state.user.profile = user;
       state.user.group = group;
@@ -59,9 +63,10 @@ export default new Vuex.Store({
         const token = resp.data.token;
         localStorage.setItem("token", token);
         commit("AUTH_REGISTER", resp.data.user);
-        throw resp.data;
+        return resp;
       } catch (err) {
         commit("SET_ERROR", err.response.data.message);
+        return err;
       }
     },
     async loginSubmit({ commit }, userData) {
@@ -101,6 +106,18 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err.response.data);
         // commit("SET_ERROR", err.response.data.message);
+      }
+    },
+    async createGroup({ commit }) {
+      commit("SET_LOADING");
+      try {
+        const resp = await connectServices.createGroup();
+        commit("AUTH_GROUP", resp.data.group);
+        return resp;
+      } catch (err) {
+        console.log(err.response.data);
+        // commit("SET_ERROR", err.response.data.message);
+        return err;
       }
     },
   },
