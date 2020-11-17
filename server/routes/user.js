@@ -79,12 +79,25 @@ router.post("/user/login", async (req, res) => {
 
 router.get("/user/me", auth, async (req, res) => {
   try {
-    await req.user.populate("group").execPopulate();
-    res.json({
-      success: true,
-      user: req.user,
-      group: req.user.group,
-    });
+    await req.user
+      .populate({
+        path: "group",
+        populate:'group members',
+      })
+      .execPopulate(function (err, user) {
+        if (err) {
+          res.status(500).json({
+            success: false,
+            message: err.message,
+          });
+        } else {
+          res.json({
+            success: true,
+            user: user,
+            group: user.group,
+          });
+        }
+      });
   } catch (err) {
     res.status(500).json({
       success: false,

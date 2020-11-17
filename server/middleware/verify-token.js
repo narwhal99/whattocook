@@ -17,6 +17,13 @@ module.exports = async function (req, res, next) {
         });
       } else {
         req.user = await User.findOne({ _id: decoded._id });
+        if (!req.user) {
+          res.status(401).json({
+            success: false,
+            message: "Failed to authenticate",
+          });
+          return;
+        }
         next();
       }
     });

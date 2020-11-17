@@ -9,6 +9,7 @@ import store from "../store";
 import Registration from "../views/Register";
 import Group from "../views/Group";
 import JoinGroup from "../components/Group/join";
+import GroupRender from "../components/Group/render";
 
 Vue.use(VueRouter);
 
@@ -49,6 +50,7 @@ let router = new VueRouter({
       path: "/group",
       component: Group,
       children: [
+        { path: "/", component: GroupRender },
         {
           name: "JoinGroup",
           path: "join",
@@ -72,12 +74,6 @@ router.beforeEach((to, from, next) => {
       return;
     }
     next("/group/join");
-  } else if (to.name === "JoinGroup") {
-    if (store.getters.haveGroup) {
-      next("/group");
-      return;
-    }
-    next();
   } else {
     next();
   }

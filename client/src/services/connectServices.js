@@ -13,7 +13,13 @@ export default {
   getFoods() {
     return Api.get("/foods");
   },
+  joinGroup(groupID) {
+    return Api.put("/group/join/" + groupID);
+  },
   createGroup() {
     return Api.post("/group");
+  },
+  addFood(food) {
+    return Api.post("/food", food);
   },
 };

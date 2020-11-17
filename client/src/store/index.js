@@ -108,6 +108,17 @@ export default new Vuex.Store({
         // commit("SET_ERROR", err.response.data.message);
       }
     },
+    async joinGroup({ commit }, groupID) {
+      commit("SET_LOADING");
+      try {
+        const resp = await connectServices.joinGroup(groupID);
+        return resp;
+      } catch (err) {
+        console.log(err.response.data);
+        commit("SET_ERROR", err.response.data.message);
+        return err;
+      }
+    },
     async createGroup({ commit }) {
       commit("SET_LOADING");
       try {
@@ -117,6 +128,15 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err.response.data);
         // commit("SET_ERROR", err.response.data.message);
+        return err;
+      }
+    },
+    async addFood({ commit }, food) {
+      try {
+        const resp = await connectServices.addFood(food);
+        return resp;
+      } catch (err) {
+        commit("SET_ERROR", err.response.data.message);
         return err;
       }
     },

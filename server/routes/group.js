@@ -54,35 +54,55 @@ router.get("/groups", async (req, res) => {
 });
 
 router.put("/group/join/:id", auth, async (req, res) => {
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(403).json({
+      success: false,
+      message: "Invalid ID!",
+    });
+  }
   try {
     await req.user
       .populate({
         path: "group",
         model: "Group",
       })
-      .execPopulate();
-    if (req.user.group) {
-      res.status(403).json({
-        success: false,
-        message: "You are aleady in a group",
+      .execPopulate(async function (err, user) {
+        if (err) {
+          res.status(500).json({
+            success: false,
+            message: err.message,
+          });
+        } else if (user.group) {
+          res.status(403).json({
+            success: false,
+            message: "You are already in a group!",
+          });
+        } else {
+          await Group.findOne({ _id: req.params.id }, async function (
+            err,
+            group
+          ) {
+            if (err) {
+              res.status(500).json({
+                success: false,
+                message: err.message,
+              });
+            } else if (group != null) {
+              await group.members.push(req.user._id);
+              await group.save();
+              res.json({
+                succes: true,
+                message: "Sucessfully joined to a group!",
+              });
+            } else {
+              res.status(403).json({
+                success: false,
+                message: "Unable to find a group!",
+              });
+            }
+          });
+        }
       });
-    } else {
-      const group = await Group.findOne({ _id: req.params.id });
-      if (group) {
-        await group.members.push(req.user._id);
-        await group.save();
-
-        res.json({
-          succes: true,
-          message: "Sucessfully joined to a group!",
-        });
-      } else {
-        res.status(403).json({
-          success: false,
-          message: "Group not found!",
-        });
-      }
-    }
   } catch (err) {
     res.status(500).json({
       success: false,
