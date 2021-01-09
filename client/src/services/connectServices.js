@@ -22,4 +22,10 @@ export default {
   addFood(food) {
     return Api.post("/food", food);
   },
+  getMyRecipes() {
+    return Api.get("/recipes");
+  },
+  addRecipe(recipe) {
+    return Api.post("/recipe", recipe);
+  },
 };

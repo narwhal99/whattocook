@@ -1,11 +1,14 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="8">
-      <v-data-table dark :headers="headers" :items="foods" v-if="foods">
+    <v-col cols="8" v-if="foods">
+      <v-data-table dark :headers="headers" :items="foods">
         <template v-slot:item.createdAt="{ item }">{{
           formatDate(item.createdAt)
         }}</template>
       </v-data-table>
+    </v-col>
+    <v-col v-else align="center">
+      <h1>You dont have any food to display</h1>
     </v-col>
   </v-row>
 </template>

@@ -15,6 +15,7 @@ export default new Vuex.Store({
       profile: {},
       group: {},
     },
+    myRecipes: null,
   },
   getters: {
     isLoggedIn: (state) => !!state.token,
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     errorMsg: (state) => state.errorMsg,
     foods: (state) => state.foods,
     user: (state) => state.user,
+    myRecipes: (state) => state.myRecipes,
   },
   mutations: {
     SET_LOADING(state) {
@@ -53,6 +55,9 @@ export default new Vuex.Store({
     SET_USER(state, { user, group }) {
       state.user.profile = user;
       state.user.group = group;
+    },
+    SET_MY_RECIPES(state, recipes) {
+      state.myRecipes = recipes;
     },
   },
   actions: {
@@ -138,6 +143,23 @@ export default new Vuex.Store({
       } catch (err) {
         commit("SET_ERROR", err.response.data.message);
         return err;
+      }
+    },
+    async getMyRecipes({ commit }) {
+      try {
+        const resp = await connectServices.getMyRecipes();
+        commit("SET_MY_RECIPES", resp.data.recipes);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async addRecipe({ commit }, recipe) {
+      commit("SET_LOADING");
+      try {
+        const resp = await connectServices.addRecipe(recipe);
+        return resp;
+      } catch (err) {
+        console.log(err);
       }
     },
   },

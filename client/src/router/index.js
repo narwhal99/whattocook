@@ -8,8 +8,11 @@ import Login from "../views/Login";
 import store from "../store";
 import Registration from "../views/Register";
 import Group from "../views/Group";
-import JoinGroup from "../components/Group/join";
+import GroupAdd from "../components/Group/join";
 import GroupRender from "../components/Group/render";
+import Recipe from "../views/Recipe";
+import RecipeAdd from "../components/Recipe/add";
+import RecipeRender from "../components/Recipe/render";
 
 Vue.use(VueRouter);
 
@@ -52,9 +55,19 @@ let router = new VueRouter({
       children: [
         { path: "/", component: GroupRender },
         {
-          name: "JoinGroup",
           path: "join",
-          component: JoinGroup,
+          component: GroupAdd,
+        },
+      ],
+    },
+    {
+      path: "/recipe",
+      component: Recipe,
+      children: [
+        { path: "/", component: RecipeRender },
+        {
+          path: "add",
+          component: RecipeAdd,
         },
       ],
     },

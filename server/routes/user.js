@@ -55,7 +55,7 @@ router.post("/user/login", async (req, res) => {
             expiresIn: 604800,
           });
           await foundUser.populate("group").execPopulate();
-          res.status(201).json({
+          res.status(200).json({
             success: true,
             token: token,
             user: foundUser,
