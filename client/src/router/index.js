@@ -13,6 +13,7 @@ import GroupRender from "../components/Group/render";
 import Recipe from "../views/Recipe";
 import RecipeAdd from "../components/Recipe/add";
 import RecipeRender from "../components/Recipe/render";
+import shopList from "../views/ShopList";
 
 Vue.use(VueRouter);
 
@@ -53,10 +54,23 @@ let router = new VueRouter({
       path: "/group",
       component: Group,
       children: [
-        { path: "/", component: GroupRender },
+        {
+          path: "/group",
+          component: GroupRender,
+          meta: {
+            needGroup: true,
+          },
+        },
         {
           path: "join",
           component: GroupAdd,
+          beforeEnter: (to, from, next) => {
+            if (!store.getters.haveGroup) {
+              next();
+              return;
+            }
+            next("/group");
+          },
         },
       ],
     },
@@ -70,25 +84,43 @@ let router = new VueRouter({
           component: RecipeAdd,
         },
       ],
+      meta: {
+        needGroup: true,
+      },
+    },
+    {
+      path: "/shoplist",
+      component: shopList,
+      meta: {
+        needGroup: true,
+      },
     },
   ],
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.noAuth)) {
-    if (!store.getters.isLoggedIn) {
-      next();
+  store.dispatch("getMyUser").then(() => {
+    if (
+      !store.getters.isLoggedIn &&
+      !to.matched.some((record) => record.meta.noAuth)
+    ) {
+      next("/login");
       return;
+    } else if (
+      store.getters.isLoggedIn &&
+      to.matched.some((record) => record.meta.noAuth)
+    ) {
+      next("/");
     }
-    next("/");
-  } else if (to.matched.some((record) => record.meta.needGroup)) {
-    if (store.getters.haveGroup) {
-      next();
-      return;
-    }
-    next("/group/join");
-  } else {
     next();
-  }
+    if (to.matched.some((record) => record.meta.needGroup)) {
+      if (store.getters.haveGroup) {
+        next();
+        return;
+      }
+      next("/group/join");
+    }
+    next();
+  });
 });
 export default router;

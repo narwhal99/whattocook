@@ -8,6 +8,7 @@ const {
   setupDatabase,
   userOneToken,
   closeDataBase,
+  userThreeToken,
 } = require("./fixtures/db");
 
 beforeEach(setupDatabase);
@@ -51,4 +52,12 @@ test("Should not join to a group without authentication", async () => {
     .expect(401);
   const group = await Group.findOne({ _id: groupOne._id });
   expect(group.members).not.toBe();
+});
+
+test("Should able to see each other recipes", async () => {
+  const resp = await request(app)
+    .get("/api/group/recipes")
+    .set("Authorization", "Bearer " + (await userThreeToken()))
+    .expect(200);
+  expect(resp.body.recipes.length).toBe(2);
 });

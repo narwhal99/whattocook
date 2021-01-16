@@ -2,8 +2,20 @@
   <v-row justify="center" align="center">
     <v-col cols="5" align="center">
       <v-card dark>
-        <v-card-title>Group Information</v-card-title>
+        <v-card-title>
+          <v-row justify="end">
+            <v-col cols="6">
+              Group Information
+            </v-col>
+            <v-col cols="3">
+              <v-btn @click="leaveGroup">Kilépés</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-title>
         <v-card-text>
+          <v-row justify="center">
+            <h2>Group ID: {{ user.group._id }}</h2>
+          </v-row>
           <v-col>
             <h2>Members:</h2>
             <v-row justify="center">
@@ -33,6 +45,16 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["user"]),
+  },
+  methods: {
+    async leaveGroup() {
+      const resp = await this.$store.dispatch("leaveGroup");
+      if (resp.status === 200) {
+        this.$router.go();
+      } else {
+        console.log(resp);
+      }
+    },
   },
 };
 </script>

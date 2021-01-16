@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const auth = require("../middleware/verify-token");
 const Recipe = require("../models/recipe");
+const authGroup = require("../middleware/verify-group");
 
-router.post("/recipe", auth, async (req, res) => {
-  console.log(req.body);
+router.post("/recipe", auth, authGroup, async (req, res) => {
   try {
     const recipe = new Recipe();
     recipe.name = req.body.name;
@@ -26,28 +26,40 @@ router.post("/recipe", auth, async (req, res) => {
   }
 });
 
-router.get("/recipes", auth, async (req, res) => {
+router.get("/recipes", auth, authGroup, async (req, res) => {
   try {
-    await req.user
-      .populate({ path: "recipe" })
-      .execPopulate(function (err, user) {
-        if (err) {
-          res.status(500).json({
-            success: false,
-            message: err.message,
-          });
-        } else if (user.recipe.length > 0) {
-          res.json({
-            success: true,
-            recipes: user.recipe,
-          });
-        } else {
-          res.json({
-            success: false,
-            message: "You dont have any recipe!",
-          });
-        }
-      });
+    await req.user.populate("recipe").execPopulate(async function (err, user) {
+      if (err) {
+        res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      } else if (user.recipe.length > 0) {
+        res.json({
+          success: true,
+          recipes: user.recipe,
+        });
+        // user.recipe.map(async (recipe) => {
+        //   recipe.ingredients.map(async (ingredient) => {
+        //     await req.user.group
+        //       .populate({
+        //         path: "foods",
+        //         match: {
+        //           name: ingredient.name,
+        //         },
+        //       })
+        //       .execPopulate(function (err, food) {
+        //         console.log(food.foods);
+        //       });
+        //   });
+        // });
+      } else {
+        res.json({
+          success: false,
+          message: "You dont have any recipe!",
+        });
+      }
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -95,4 +107,5 @@ router.put("/recipe/:id", auth, async (req, res) => {
   }
 });
 
+// const differenceCalculation = (ingredient, fridgeFood) => {};
 module.exports = router;

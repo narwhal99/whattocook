@@ -28,4 +28,25 @@ export default {
   addRecipe(recipe) {
     return Api.post("/recipe", recipe);
   },
+  getMyGroupRecipes() {
+    return Api.get("/group/recipes");
+  },
+  leaveGroup() {
+    return Api.post("/group/leave");
+  },
+  deletefood(foodID) {
+    return Api.delete(`/food/${foodID}`);
+  },
+  editFood(editedFood) {
+    return Api.patch("food", editedFood);
+  },
+  getShoplist() {
+    return Api.get("/shoplist");
+  },
+  shopItemSubmit(shopItem) {
+    return Api.post("/shoplist", shopItem);
+  },
+  shopItemDelete(item) {
+    return Api.delete("/shoplist/" + item);
+  },
 };

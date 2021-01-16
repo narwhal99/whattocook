@@ -1,9 +1,13 @@
 <template>
   <v-row>
     <v-col>
-      <v-text-field label="Search" append-icon="mdi-magnify"></v-text-field>
+      <v-text-field
+        label="Search"
+        v-model="searchFilter_input"
+        append-icon="mdi-magnify"
+      ></v-text-field>
       <v-expansion-panels>
-        <v-expansion-panel v-for="(recipe, i) in myRecipes" :key="i">
+        <v-expansion-panel v-for="(recipe, i) in searchFilter" :key="i">
           <!-- RECIPE NAME  -->
           <v-expansion-panel-header>
             <v-row>
@@ -69,10 +73,23 @@
 import { mapGetters } from "vuex";
 export default {
   data() {
-    return {};
+    return {
+      searchFilter_input: "",
+    };
   },
   computed: {
     ...mapGetters(["myRecipes"]),
+    searchFilter() {
+      if (!this.myRecipes) return;
+      return this.myRecipes.filter((recipes) => {
+        return (
+          !this.searchFilter_input ||
+          recipes.name
+            .toLowerCase()
+            .indexOf(this.searchFilter_input.toLowerCase()) > -1
+        );
+      });
+    },
   },
 };
 </script>

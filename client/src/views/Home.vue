@@ -87,13 +87,13 @@
             >
           </v-hover>
         </v-col>
-        <v-col align="center" class="pa-0 ma-0" v-if="!haveGroup">
+        <v-col align="center" class="pa-0 ma-0" v-if="haveGroup">
           <v-hover v-slot="{ hover }">
             <v-btn
               outlined
               :elevation="hover ? 16 : 0"
               text
-              to="/shoppinglist"
+              to="/shoplist"
               width="100%"
               height="250px"
               >Show my shopping list</v-btn

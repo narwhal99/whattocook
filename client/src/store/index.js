@@ -12,10 +12,11 @@ export default new Vuex.Store({
     loading: false,
     foods: null,
     user: {
-      profile: {},
-      group: {},
+      profile: null,
+      group: null,
     },
     myRecipes: null,
+    shoplist: null,
   },
   getters: {
     isLoggedIn: (state) => !!state.token,
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     foods: (state) => state.foods,
     user: (state) => state.user,
     myRecipes: (state) => state.myRecipes,
+    shoplist: (state) => state.shoplist,
   },
   mutations: {
     SET_LOADING(state) {
@@ -37,7 +39,7 @@ export default new Vuex.Store({
     },
     AUTH_LOGOUT(state) {
       state.loading = false;
-      state.token = "";
+      state.token = null;
     },
     AUTH_LOGIN(state, { user, group }) {
       state.loading = false;
@@ -58,6 +60,9 @@ export default new Vuex.Store({
     },
     SET_MY_RECIPES(state, recipes) {
       state.myRecipes = recipes;
+    },
+    SET_SHOPLIST(state, list) {
+      state.shoplist = list;
     },
   },
   actions: {
@@ -153,11 +158,70 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
+    async getMyGroupRecipes({ commit }) {
+      try {
+        const resp = await connectServices.getMyGroupRecipes();
+        commit("SET_MY_RECIPES", resp.data.recipes);
+      } catch (err) {
+        console.log(err);
+      }
+    },
     async addRecipe({ commit }, recipe) {
       commit("SET_LOADING");
       try {
-        const resp = await connectServices.addRecipe(recipe);
-        return resp;
+        return await connectServices.addRecipe(recipe);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async leaveGroup({ commit }) {
+      commit("SET_LOADING");
+      try {
+        return await connectServices.leaveGroup();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async deletefood({ commit }, foodID) {
+      commit("SET_LOADING");
+      try {
+        return await connectServices.deletefood(foodID);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async editFood({ commit }, editedFood) {
+      commit("SET_LOADING");
+      try {
+        return await connectServices.editFood(editedFood);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getShoplist({ commit }) {
+      try {
+        const resp = await connectServices.getShoplist();
+        commit("SET_SHOPLIST", resp.data.list);
+      } catch (err) {
+        if (err.response.status == 404) {
+          commit("SET_SHOPLIST", null);
+        } else {
+          console.log(err);
+        }
+      }
+    },
+    async shopItemSubmit({ commit }, shopItem) {
+      commit("SET_LOADING");
+      try {
+        return await connectServices.shopItemSubmit(shopItem);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async shopItemDelete({ commit }, item) {
+      commit("SET_LOADING");
+      try {
+        return await connectServices.shopItemDelete(item);
       } catch (err) {
         console.log(err);
       }

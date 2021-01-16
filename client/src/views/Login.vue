@@ -50,7 +50,7 @@ export default {
       };
       try {
         const resp = await this.$store.dispatch("loginSubmit", user);
-        if (resp.status === 201) {
+        if (resp.status === 200) {
           this.$router.go();
         }
       } catch (err) {

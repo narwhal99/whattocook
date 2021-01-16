@@ -3,14 +3,14 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const cors = require('cors')
+const cors = require("cors");
 
 const app = express();
 
 dotenv.config();
 
 mongoose.connect(
-  "mongodb://127.0.0.1:27017/cook",
+  process.env.MONGODB_URL,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -27,17 +27,19 @@ mongoose.connect(
 );
 
 //Middleware
-app.use(cors())
+app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //require apis
+const shoplistRoutes = require("./routes/shoplist");
 const foodRoutes = require("./routes/food");
 const groupRoutes = require("./routes/group");
 const userRoutes = require("./routes/user");
 const recipeRoutes = require("./routes/recipe");
 
+app.use("/api", shoplistRoutes);
 app.use("/api", recipeRoutes);
 app.use("/api", foodRoutes);
 app.use("/api", groupRoutes);

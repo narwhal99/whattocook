@@ -25,10 +25,18 @@ const userTwo = {
   password: "password321",
 };
 
+//User group with two
+const userThree = {
+  _id: new mongoose.Types.ObjectId(),
+  fullName: "Group with two",
+  email: "groupwithtwo@example.com",
+  password: "password321",
+};
+
 //Already have member
 const groupTwo = {
   _id: new mongoose.Types.ObjectId(),
-  members: [userTwo._id],
+  members: [userTwo._id, userThree._id],
 };
 
 const recipeOne = {
@@ -36,6 +44,7 @@ const recipeOne = {
   name: "Without owner",
   preparation: ["Moss étel1", "Mosst étel2"],
   description: "főződ",
+  owner: userThree._id,
 };
 
 const recipeTwo = {
@@ -44,6 +53,13 @@ const recipeTwo = {
   preparation: ["Moss étel1", "Mosst étel2"],
   description: "főződ",
   owner: userTwo._id,
+};
+
+const foodOne = {
+  _id: new mongoose.Types.ObjectId(),
+  name: "Répa",
+  quantity: 5,
+  unit: "kg",
 };
 
 const userOneToken = async () => {
@@ -56,15 +72,22 @@ const userTwoToken = async () => {
   const token = jwt.sign(user.toJSON(), process.env.TOKENKEY);
   return token;
 };
+const userThreeToken = async () => {
+  const user = await User.findOne({ email: userThree.email });
+  const token = jwt.sign(user.toJSON(), process.env.TOKENKEY);
+  return token;
+};
 const setupDatabase = async () => {
   await User.deleteMany();
   await Group.deleteMany();
   await Food.deleteMany();
   await Recipe.deleteMany();
+  await new Food(foodOne).save();
   await new User(userOne).save();
   await new Group(groupOne).save();
   await new User(userTwo).save();
   await new Group(groupTwo).save();
+  await new User(userThree).save();
   await new Recipe(recipeOne).save();
   await new Recipe(recipeTwo).save();
 };
@@ -78,8 +101,10 @@ module.exports = {
   groupOne,
   recipeOne,
   recipeTwo,
+  foodOne,
   setupDatabase,
   userOneToken,
   userTwoToken,
   closeDataBase,
+  userThreeToken,
 };

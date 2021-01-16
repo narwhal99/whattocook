@@ -19,7 +19,7 @@ afterAll(closeDataBase);
 test("Should create a recipe", async () => {
   await request(app)
     .post("/api/recipe")
-    .set("Authorization", "Bearer " + (await userOneToken()))
+    .set("Authorization", "Bearer " + (await userTwoToken()))
     .send({
       name: "TestÉtel",
       peparation: "Moss ételt",

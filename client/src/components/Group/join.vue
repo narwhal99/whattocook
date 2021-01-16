@@ -43,7 +43,7 @@ export default {
     async submitJoinGroup() {
       try {
         const resp = await this.$store.dispatch("joinGroup", this.groupID);
-        if (resp.status === 201) {
+        if (resp.status === 200) {
           this.$router.go();
         }
       } catch (err) {

@@ -82,7 +82,7 @@ router.get("/user/me", auth, async (req, res) => {
     await req.user
       .populate({
         path: "group",
-        populate:'group members',
+        populate: "group members",
       })
       .execPopulate(function (err, user) {
         if (err) {
