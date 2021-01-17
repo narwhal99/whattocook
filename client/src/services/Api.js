@@ -3,7 +3,7 @@ import axios from "axios";
 // import store from "../store";
 
 const instance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "http://192.168.1.249:3000/api",
   timeout: 10000,
   params: {}, // do not remove this, its added to add params later in the config
   headers: {

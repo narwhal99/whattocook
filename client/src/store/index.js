@@ -94,13 +94,14 @@ export default new Vuex.Store({
         return err;
       }
     },
-    async getMyUser({ commit }) {
+    async getMyUser({ commit, dispatch }) {
       try {
         const resp = await connectServices.getMyUser();
         const group = resp.data.group;
         const user = resp.data.user;
         commit("SET_USER", { user, group });
       } catch (err) {
+        dispatch("logout");
         console.log(err);
       }
     },

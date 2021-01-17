@@ -1,7 +1,7 @@
 <template>
-  <v-row justify="center" style="backgroundColor:#ECE5D7;" >
+  <v-row justify="center" style="backgroundColor:#ECE5D7;">
     <v-col cols="12" lg="3">
-      <v-card  dark>
+      <v-card dark>
         <v-card-title class="justify-center">
           <h2>Felírás</h2>
         </v-card-title>
@@ -25,21 +25,48 @@
       </v-card>
     </v-col>
     <v-col cols="12" lg="6" v-if="shoplist">
-      <v-data-table
-        dark
-        :headers="headers"
-        :items="shoplist"
-       
-        hide-default-footer
-      >
-        <template v-slot:item.createdAt="{ item }"
-          >{{ formatDate(item.createdAt) }}
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-          <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-        </template>
-      </v-data-table>
+      <v-card>
+        <v-toolbar dark>
+          <v-toolbar-title>ShopList</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-list two-line>
+          <v-list-item-group
+            active-class="black--text"
+            multiple
+            v-model="selected"
+          >
+            <template v-for="(item, index) in shoplist">
+              <v-list-item :key="index">
+                <template v-slot:default="{ active }">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.item"> </v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <v-icon v-if="!active" color="grey lighten-1">
+                      check_box_outline_blank
+                    </v-icon>
+                    <v-icon v-else color="yellow darken-3">
+                      check_box
+                    </v-icon>
+                    <v-list-item-action-text
+                      class="text--primary"
+                      v-text="item.addedBy.fullName"
+                    >
+                    </v-list-item-action-text>
+                    <v-list-item-action-text
+                      v-text="formatDate(item.createdAt)"
+                    ></v-list-item-action-text>
+                  </v-list-item-action>
+                </template>
+              </v-list-item>
+            </template>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
     </v-col>
     <v-col v-else align="center" cols="6">
       <h1>Your shoplist is empty</h1>
@@ -53,22 +80,9 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      selected: null,
+
       shopItem: null,
-      headers: [
-        {
-          text: "item",
-          value: "item",
-        },
-        {
-          text: "Added at",
-          value: "createdAt",
-        },
-        {
-          text: "AddedBy",
-          value: "addedBy.fullName",
-        },
-        { text: "Actions", value: "actions", sortable: false },
-      ],
     };
   },
   methods: {

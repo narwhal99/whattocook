@@ -98,7 +98,7 @@ let router = new VueRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   store.dispatch("getMyUser").then(() => {
     if (
       !store.getters.isLoggedIn &&
