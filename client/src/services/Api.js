@@ -1,9 +1,11 @@
 import axios from "axios";
 // import router from "../router";
 // import store from "../store";
+//http://192.168.0.249:2078/api  //MOBILE
+//http://192.168.0.250:3000/api  //PC
 
 const instance = axios.create({
-  baseURL: "http://192.168.0.249:3000/api",
+  baseURL: "http://192.168.0.249:2078/api",
   timeout: 10000,
   params: {}, // do not remove this, its added to add params later in the config
   headers: {
