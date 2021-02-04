@@ -49,4 +49,10 @@ export default {
   shopItemDelete(item) {
     return Api.delete("/shoplist/" + item);
   },
+  updateshoplistTODO(itemID) {
+    return Api.patch("/shoplist/todo/" + itemID)
+  },
+  DeleteAllDoneTODO() {
+    return Api.delete('/shoplist/todo/all')
+  }
 };

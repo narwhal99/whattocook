@@ -227,5 +227,24 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
+    async updateshoplistTODO({ commit, dispatch }, itemID) {
+      commit("SET_LOADING");
+      try {
+        const resp = await connectServices.updateshoplistTODO(itemID)
+        if (resp.status == 200)
+          dispatch("getShoplist")
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async DeleteAllDoneTODO({ dispatch }) {
+      try {
+        const resp = await connectServices.DeleteAllDoneTODO()
+        if (resp.status == 200)
+          dispatch("getShoplist")
+      } catch (err) {
+        console.log(err)
+      }
+    }
   },
 });

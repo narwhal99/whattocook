@@ -17,6 +17,9 @@ const ShoplistSchema = new Schema(
       required: true,
       ref: "Group",
     },
+    todo: {
+      type: Boolean
+    }
   },
   { timestamps: true }
 );

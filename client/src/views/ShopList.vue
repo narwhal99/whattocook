@@ -1,6 +1,6 @@
 <template>
-  <v-row justify="center" style="backgroundColor:#ECE5D7;">
-    <v-col cols="12" lg="3">
+  <v-row justify="center" style="backgroundcolor: #ece5d7">
+    <v-col cols="11" lg="3">
       <v-card dark>
         <v-card-title class="justify-center">
           <h2>Felírás</h2>
@@ -19,12 +19,14 @@
             </v-row>
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn text outlined type="submit">Add</v-btn>
+            <v-btn outlined type="submit" width="100%" color="success"
+              >Add</v-btn
+            >
           </v-card-actions>
         </v-form>
       </v-card>
     </v-col>
-    <v-col cols="12" lg="6" v-if="shoplist">
+    <v-col cols="11" lg="6" v-if="shoplist">
       <v-card>
         <v-toolbar dark>
           <v-toolbar-title>ShopList</v-toolbar-title>
@@ -34,40 +36,44 @@
           </v-btn>
         </v-toolbar>
         <v-list two-line>
-          <v-list-item-group
-            active-class="black--text"
-            multiple
-            v-model="selected"
-          >
+          <v-list-item-group active-class="black--text" multiple>
             <template v-for="(item, index) in shoplist">
-              <v-list-item :key="index">
-                <template v-slot:default="{ active }">
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.item"> </v-list-item-title>
-                  </v-list-item-content>
-                  <v-list-item-action>
-                    <v-icon v-if="!active" color="grey lighten-1">
-                      check_box_outline_blank
-                    </v-icon>
-                    <v-icon v-else color="yellow darken-3">
-                      check_box
-                    </v-icon>
-                    <v-list-item-action-text
-                      class="text--primary"
-                      v-text="item.addedBy.fullName"
-                    >
-                    </v-list-item-action-text>
-                    <v-list-item-action-text
-                      v-text="formatDate(item.createdAt)"
-                    ></v-list-item-action-text>
-                  </v-list-item-action>
-                </template>
+              <v-list-item
+                inactive
+                :key="index"
+                @click="updateshoplistTODO(item._id)"
+              >
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.item"> </v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon v-if="!item.todo" color="grey lighten-1">
+                    check_box_outline_blank
+                  </v-icon>
+                  <v-icon v-else color="green darken-3"> check_box </v-icon>
+                  <v-list-item-action-text
+                    class="text--primary"
+                    v-text="item.addedBy.fullName"
+                  >
+                  </v-list-item-action-text>
+                  <v-list-item-action-text
+                    v-text="formatDate(item.createdAt)"
+                  ></v-list-item-action-text>
+                </v-list-item-action>
               </v-list-item>
             </template>
           </v-list-item-group>
         </v-list>
       </v-card>
+      <v-col>
+        <v-row justify="center">
+          <v-btn outlined color="yellow" @click="DeleteAllDoneTODO"
+            >Delete all done TODO</v-btn
+          >
+        </v-row>
+      </v-col>
     </v-col>
+
     <v-col v-else align="center" cols="6">
       <h1>Your shoplist is empty</h1>
     </v-col>
@@ -80,12 +86,16 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      selected: null,
-
       shopItem: null,
     };
   },
   methods: {
+    async DeleteAllDoneTODO() {
+      await this.$store.dispatch("DeleteAllDoneTODO");
+    },
+    async updateshoplistTODO(itemID) {
+      await this.$store.dispatch("updateshoplistTODO", itemID);
+    },
     async deleteItem(item) {
       if (
         confirm("Biztos akarok törölni a hűtőből a(z) " + item.item + "-t?")
@@ -107,9 +117,7 @@ export default {
       }
     },
     formatDate(value) {
-      return moment(value)
-        .locale("hu")
-        .format("MMM Do h:m");
+      return moment(value).locale("hu").format("MMM Do h:m");
     },
   },
   computed: {

@@ -32,6 +32,11 @@ router.get("/shoplist", auth, authGroup, async (req, res) => {
         populate: {
           path: "addedBy",
         },
+        options: {
+          sort: {
+            todo: 1
+          }
+        }
       })
       .execPopulate(async function (err, group) {
         if (group.shoplist.length < 1) {
@@ -68,5 +73,57 @@ router.delete("/shoplist/:id", auth, authGroup, async (req, res) => {
     });
   }
 });
+
+router.patch("/shoplist/todo/:id", auth, authGroup, async (req, res) => {
+  try {
+    await Shoplist.findById(req.params.id, function (err, list) {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      }
+      list.todo = !list.todo
+      list.save()
+      res.status(200).json({
+        success: true,
+        message: "Successfully updated a TODO",
+      });
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+})
+
+router.delete('/shoplist/todo/all', auth, authGroup, async (req, res) => {
+  try {
+    console.log('fika')
+    await req.user.group.populate("shoplist").execPopulate(async function (err, group) {
+      if (err) {
+        res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      } else {
+        const result = group.shoplist.filter(item => item.todo == true)
+        await Shoplist.deleteMany({ _id: { $in: result } })
+        res.status(200).json({
+          success: true,
+          message: "Successfully removed all done TODO",
+        });
+      }
+    })
+
+  }
+  catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+})
 
 module.exports = router;
