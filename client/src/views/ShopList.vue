@@ -16,7 +16,7 @@
             </v-row>
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn outlined type="submit" width="100%" color="success"
+            <v-btn outlined type="submit" width="100%" 
               >Add</v-btn
             >
           </v-card-actions>

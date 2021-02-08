@@ -3,10 +3,10 @@
     <v-row justify="center">
       <v-col lg="9" xl="6">
         <v-form ref="mainForm" @submit="submit">
-          <v-card raised class="px-4" style="backgroundColor: #d1bb9b ;">
+          <v-card raised class="px-4" style="background: #f8c471">
             <v-card-title>
               <v-row justify="center">
-                <h2>Recept hozzáadás</h2>
+                <h3>Recept hozzáadás</h3>
               </v-row>
             </v-card-title>
             <v-card-text>
@@ -20,8 +20,11 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
+              <v-col>
+                <v-divider />
+              </v-col>
               <v-row justify="center">
-                <h1>Hozzávalók:</h1>
+                <h3>Hozzávalók:</h3>
               </v-row>
               <v-row v-for="(data, index) in recipe.ingredients" :key="index">
                 <v-col>
@@ -40,59 +43,55 @@
                     v-model="data.quantity"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="4">
+                <v-col>
                   <v-select
+                    append-outer-icon="mdi-delete"
+                    @click:append-outer="ingredientMinusIng(index)"
                     solo
                     :items="foodUnit"
                     v-model="data.unit"
                     label="Mennyiség"
                   ></v-select>
                 </v-col>
-                <v-col>
-                  <v-icon @click="ingredientMinusIng(index)">mdi-delete</v-icon>
-                </v-col>
               </v-row>
               <v-row justify="center">
-                <v-btn color="#e9dd45" @click="ingredientPlus"
-                  >Sor hozzáadás</v-btn
-                >
+                <v-btn outlined @click="ingredientPlus">Sor hozzáadás</v-btn>
               </v-row>
               <v-col>
+                <v-divider />
+              </v-col>
+              <v-col>
                 <v-row justify="center">
-                  <h1>Étel elkészítése:</h1>
+                  <h3>Étel elkészítése:</h3>
                 </v-row>
               </v-col>
               <v-row
                 v-for="(data, index) in this.recipe.preparation"
                 :key="'A' + index"
               >
-                <v-col>
-                  <v-row>
-                    <v-col cols="1">
-                      <h3>{{ index + 1 }}.</h3>
-                    </v-col>
-                    <v-text-field
-                      solo
-                      label="Elkészítés"
-                      v-model="data.value"
-                      :key="index"
-                    ></v-text-field>
-                  </v-row>
-                </v-col>
                 <v-col cols="1">
-                  <v-icon @click="ingredientMinusPrep(index)"
-                    >mdi-delete</v-icon
-                  >
+                  <h3>{{ index + 1 }}.</h3>
                 </v-col>
+                <v-text-field
+                  solo
+                  label="Elkészítés"
+                  v-model="data.value"
+                  :key="index"
+                  append-outer-icon="mdi-delete"
+                  @click:append-outer="ingredientMinusPrep(index)"
+                ></v-text-field>
               </v-row>
               <v-row justify="center">
-                <v-btn color="#e9dd45" @click="ingredientPlusPrep"
+                <v-btn outlined @click="ingredientPlusPrep"
                   >Sor hozzáadás</v-btn
                 >
               </v-row>
               <v-col>
+                <v-divider />
+              </v-col>
+              <v-col>
                 <v-row justify="center">
-                  <h1>Leírás:</h1>
+                  <h3>Leírás:</h3>
                 </v-row>
               </v-col>
               <v-row>

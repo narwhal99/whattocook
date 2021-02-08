@@ -66,7 +66,7 @@
               <v-row>
                 <v-col> {{ recipe.description }} </v-col>
               </v-row>
-              <v-btn outlined>Open recipe</v-btn>
+              <v-btn small outlined>Open recipe</v-btn>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
