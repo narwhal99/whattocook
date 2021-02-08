@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-content>
+    <v-main>
       <Navbar v-if="this.$store.getters.isLoggedIn" />
       <transition name="slide" mode="out-in">
         <router-view />
       </transition>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 

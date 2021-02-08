@@ -3,21 +3,17 @@
     <v-col cols="11" md="5" align="center">
       <v-card dark>
         <v-card-title>
-          <v-row justify="end">
-            <v-col cols="6">
-              Group Information
-            </v-col>
-            <v-col cols="3">
-              <v-btn @click="leaveGroup">Kilépés</v-btn>
-            </v-col>
+          <v-row justify="center">
+            <v-col cols="12"> Group Information </v-col>
           </v-row>
         </v-card-title>
         <v-card-text>
           <v-row justify="center">
-            <h2>Group ID: {{ user.group._id }}</h2>
+            <h4>Group ID: {{ user.group._id }}</h4>
           </v-row>
+          <v-divider></v-divider>
           <v-col>
-            <h2>Members:</h2>
+            <h3>Members:</h3>
             <v-row justify="center">
               <template v-for="(member, i) in user.group.members">
                 <v-hover v-slot:default="{ hover }" :key="i">
@@ -35,6 +31,11 @@
             </v-row>
           </v-col>
         </v-card-text>
+        <v-card-actions>
+          <v-col>
+            <v-btn @click="leaveGroup">Kilépés</v-btn>
+          </v-col>
+        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>

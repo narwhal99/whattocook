@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center" style="backgroundcolor: #ece5d7">
-    <v-col cols="11" lg="5">
+    <v-col cols="11" md="5">
       <v-card dark>
         <v-form ref="shoplistForm" @submit="shopItemSubmit">
           <v-card-text>
@@ -23,7 +23,7 @@
         </v-form>
       </v-card>
     </v-col>
-    <v-col cols="11" lg="6" v-if="shoplist">
+    <v-col cols="11" md="5" v-if="shoplist">
       <v-card>
         <v-toolbar dark>
           <v-toolbar-title>ShopList</v-toolbar-title>
