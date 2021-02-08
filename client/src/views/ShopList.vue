@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center" style="backgroundcolor: #ece5d7">
-    <v-col cols="11" lg="3">
+    <v-col cols="11" lg="5">
       <v-card dark>
         <v-card-title class="justify-center">
           <h2>Felírás</h2>

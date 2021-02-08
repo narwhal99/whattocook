@@ -1,11 +1,9 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="4" align="center">
+    <v-col cols="11" md="3" align="center">
       <v-card dark>
         <v-card-title>
-          <v-row justify="center" align="center">
-            Registration
-          </v-row>
+          <v-row justify="center" align="center"> Registration </v-row>
         </v-card-title>
         <v-form ref="regForm" @submit.prevent="regSubmit">
           <v-card-text>
