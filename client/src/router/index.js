@@ -12,6 +12,8 @@ import RecipeAdd from "../components/Recipe/add";
 import RecipeRender from "../components/Recipe/render";
 import shopList from "../views/ShopList";
 import Settings from '../views/Settings.vue'
+import SettingsUser from "../components/Settings/Profile.vue"
+import SettingsPWD from "../components/Settings/Password.vue"
 
 Vue.use(VueRouter);
 
@@ -85,6 +87,10 @@ let router = new VueRouter({
     {
       path: "/settings",
       component: Settings,
+      children: [
+        { path: 'profile', component: SettingsUser },
+        { path: 'password', component: SettingsPWD }
+      ]
     }
   ],
 });

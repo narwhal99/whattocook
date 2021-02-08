@@ -41,7 +41,7 @@
               outlined
               :elevation="hover ? 16 : 0"
               text
-              to="/settings"
+              to="/settings/profile"
               width="100%"
               height="250px"
               >Settings</v-btn
