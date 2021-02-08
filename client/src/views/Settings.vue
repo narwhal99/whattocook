@@ -1,23 +1,24 @@
 <template>
-  <v-app>
-    <v-content>
-      <Navbar v-if="this.$store.getters.isLoggedIn" />
+  <v-row justify="center" align="center">
+    <v-col cols="12" sm="3">
+      <settingsMenu></settingsMenu>
+    </v-col>
+    <v-col cols="12" sm="9">
       <transition name="slide" mode="out-in">
-        <router-view />
+        <router-view></router-view>
       </transition>
-    </v-content>
-  </v-app>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import Navbar from "./components/Navbar/navbar";
+import settingsMenu from "../components/Settings/menu";
 export default {
   components: {
-    Navbar,
+    settingsMenu,
   },
 };
 </script>
-
 
 <style>
 .slide-enter-active,

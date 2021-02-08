@@ -23,7 +23,7 @@
               </v-col>
               <v-spacer></v-spacer>
               <v-col>
-                <h3 style="color: red">Hiányzó ételek:</h3>
+                <h3 style="color:red">Hiányzó ételek:</h3>
               </v-col>
             </v-row>
             <v-col>
