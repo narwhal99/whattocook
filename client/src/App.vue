@@ -1,9 +1,17 @@
 <template>
   <v-app>
-    <router-view />
+    <v-content>
+      <Navbar />
+      <router-view />
+    </v-content>
   </v-app>
 </template>
 
 <script>
-export default {};
+import Navbar from "./components/Navbar/navbar";
+export default {
+  components: {
+    Navbar,
+  },
+};
 </script>
