@@ -34,14 +34,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //require apis
 const shoplistRoutes = require("./routes/shoplist");
-const foodRoutes = require("./routes/food");
 const groupRoutes = require("./routes/group");
 const userRoutes = require("./routes/user");
 const recipeRoutes = require("./routes/recipe");
 
 app.use("/api", shoplistRoutes);
 app.use("/api", recipeRoutes);
-app.use("/api", foodRoutes);
 app.use("/api", groupRoutes);
 app.use("/api", userRoutes);
 

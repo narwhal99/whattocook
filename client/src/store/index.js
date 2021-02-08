@@ -10,7 +10,6 @@ export default new Vuex.Store({
     token: localStorage.getItem("token") || "",
     errorMsg: null,
     loading: false,
-    foods: null,
     user: {
       profile: null,
       group: null,
@@ -22,7 +21,6 @@ export default new Vuex.Store({
     isLoggedIn: (state) => !!state.token,
     haveGroup: (state) => !!state.user.group,
     errorMsg: (state) => state.errorMsg,
-    foods: (state) => state.foods,
     user: (state) => state.user,
     myRecipes: (state) => state.myRecipes,
     shoplist: (state) => state.shoplist,
@@ -33,9 +31,6 @@ export default new Vuex.Store({
     },
     SET_ERROR(state, error) {
       state.errorMsg = error;
-    },
-    SET_FOODS(state, foods) {
-      state.foods = foods;
     },
     AUTH_LOGOUT(state) {
       state.loading = false;
@@ -109,16 +104,6 @@ export default new Vuex.Store({
       localStorage.removeItem("token");
       commit("AUTH_LOGOUT");
     },
-    async getFoods({ commit }) {
-      commit("SET_LOADING");
-      try {
-        const resp = await connectServices.getFoods();
-        commit("SET_FOODS", resp.data.foods);
-      } catch (err) {
-        console.log(err.response.data);
-        // commit("SET_ERROR", err.response.data.message);
-      }
-    },
     async joinGroup({ commit }, groupID) {
       commit("SET_LOADING");
       try {
@@ -139,15 +124,6 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err.response.data);
         // commit("SET_ERROR", err.response.data.message);
-        return err;
-      }
-    },
-    async addFood({ commit }, food) {
-      try {
-        const resp = await connectServices.addFood(food);
-        return resp;
-      } catch (err) {
-        commit("SET_ERROR", err.response.data.message);
         return err;
       }
     },
@@ -179,22 +155,6 @@ export default new Vuex.Store({
       commit("SET_LOADING");
       try {
         return await connectServices.leaveGroup();
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async deletefood({ commit }, foodID) {
-      commit("SET_LOADING");
-      try {
-        return await connectServices.deletefood(foodID);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async editFood({ commit }, editedFood) {
-      commit("SET_LOADING");
-      try {
-        return await connectServices.editFood(editedFood);
       } catch (err) {
         console.log(err);
       }

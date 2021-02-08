@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/user");
 const Group = require("../../models/group");
-const Food = require("../../models/food");
 const Recipe = require("../../models/recipe");
 
 //User withhout group
@@ -55,12 +54,6 @@ const recipeTwo = {
   owner: userTwo._id,
 };
 
-const foodOne = {
-  _id: new mongoose.Types.ObjectId(),
-  name: "Répa",
-  quantity: 5,
-  unit: "kg",
-};
 
 const userOneToken = async () => {
   const user = await User.findOne({ email: userOne.email });
@@ -80,9 +73,7 @@ const userThreeToken = async () => {
 const setupDatabase = async () => {
   await User.deleteMany();
   await Group.deleteMany();
-  await Food.deleteMany();
   await Recipe.deleteMany();
-  await new Food(foodOne).save();
   await new User(userOne).save();
   await new Group(groupOne).save();
   await new User(userTwo).save();
@@ -101,7 +92,6 @@ module.exports = {
   groupOne,
   recipeOne,
   recipeTwo,
-  foodOne,
   setupDatabase,
   userOneToken,
   userTwoToken,

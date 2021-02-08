@@ -3,12 +3,6 @@ const Schema = mongoose.Schema;
 
 const GroupSchema = new Schema(
   {
-    foods: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Food",
-      },
-    ],
     members: [
       {
         type: Schema.Types.ObjectId,
