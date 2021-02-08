@@ -11,6 +11,7 @@ import Recipe from "../views/Recipe";
 import RecipeAdd from "../components/Recipe/add";
 import RecipeRender from "../components/Recipe/render";
 import shopList from "../views/ShopList";
+import Settings from '../views/Settings.vue'
 
 Vue.use(VueRouter);
 
@@ -81,6 +82,10 @@ let router = new VueRouter({
         needGroup: true,
       },
     },
+    {
+      path: "/settings",
+      component: Settings,
+    }
   ],
 });
 

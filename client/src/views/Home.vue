@@ -35,6 +35,19 @@
         </v-col>
       </v-row>
       <v-row>
+          <v-col align="center" class="pa-0 ma-0">
+          <v-hover v-slot="{ hover }">
+            <v-btn
+              outlined
+              :elevation="hover ? 16 : 0"
+              text
+              to="/settings"
+              width="100%"
+              height="250px"
+              >Settings</v-btn
+            >
+          </v-hover>
+        </v-col>
         <v-col align="center" class="pa-0 ma-0" v-if="!haveGroup">
           <v-hover v-slot="{ hover }">
             <v-btn
