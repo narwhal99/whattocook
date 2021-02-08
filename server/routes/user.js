@@ -106,4 +106,38 @@ router.get("/user/me", auth, async (req, res) => {
   }
 });
 
+router.patch("/user/me", auth, async (req, res) => {
+  try {
+    if (req.body.cpwd && req.user.comparePassword(req.body.cpwd)) {
+      await User.findByIdAndUpdate(req.user._id, {
+        fullName: req.body.fullName,
+        email: req.body.email
+      }, function (err, result) {
+        if (err) {
+          res.status(500).json({
+            success: false,
+            message: err.message
+          })
+        }
+        res.status(200).json({
+          success: false,
+          message: "Succesfully updated your profile"
+        })
+      })
+    } else {
+      res.status(401).json({
+        success: false,
+        message: "Wrong password"
+      })
+    }
+  }
+  catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+
+})
+
 module.exports = router;

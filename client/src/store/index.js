@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
 Vue.use(Vuex);
 
 import connectServices from "../services/connectServices";
@@ -204,6 +203,14 @@ export default new Vuex.Store({
           dispatch("getShoplist")
       } catch (err) {
         console.log(err)
+      }
+    },
+    async updateMyProfile({ commit }, euser) {
+      commit("SET_LOADING");
+      try {
+        return await connectServices.updateMyProfile(euser)
+      } catch (err) {
+        commit("SET_ERROR", err.response.data.message);
       }
     }
   },

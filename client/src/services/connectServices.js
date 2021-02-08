@@ -42,5 +42,8 @@ export default {
   },
   DeleteAllDoneTODO() {
     return Api.delete('/shoplist/todo/all')
+  },
+  updateMyProfile(euser) {
+    return Api.patch('user/me', euser)
   }
 };
