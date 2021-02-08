@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center" style="backgroundColor:#ECE5D7;">
+  <v-row align="center" justify="center" style="backgroundcolor: #ece5d7">
     <v-col align="center" cols="10">
       <v-row>
         <v-col>
@@ -7,32 +7,6 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col align="center" class="pa-0 ma-0;">
-          <v-hover v-slot="{ hover }">
-            <v-btn
-              outlined
-              :elevation="hover ? 16 : 0"
-              text
-              to="/food"
-              width="100%"
-              height="250px"
-              >Food</v-btn
-            >
-          </v-hover>
-        </v-col>
-        <v-col align="center" class="pa-0 ma-0">
-          <v-hover v-slot="{ hover }">
-            <v-btn
-              outlined
-              :elevation="hover ? 16 : 0"
-              text
-              to="/food/add"
-              width="100%"
-              height="250px"
-              >Add Food</v-btn
-            >
-          </v-hover>
-        </v-col>
         <v-col align="center" class="pa-0 ma-0">
           <v-hover v-slot="{ hover }">
             <v-btn

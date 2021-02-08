@@ -10,17 +10,11 @@ export default {
   getMyUser() {
     return Api.get("user/me");
   },
-  getFoods() {
-    return Api.get("/foods");
-  },
   joinGroup(groupID) {
     return Api.put("/group/join/" + groupID);
   },
   createGroup() {
     return Api.post("/group");
-  },
-  addFood(food) {
-    return Api.post("/food", food);
   },
   getMyRecipes() {
     return Api.get("/recipes");
@@ -33,12 +27,6 @@ export default {
   },
   leaveGroup() {
     return Api.post("/group/leave");
-  },
-  deletefood(foodID) {
-    return Api.delete(`/food/${foodID}`);
-  },
-  editFood(editedFood) {
-    return Api.patch("food", editedFood);
   },
   getShoplist() {
     return Api.get("/shoplist");

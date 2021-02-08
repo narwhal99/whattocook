@@ -1,9 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Food from "../views/Food.vue";
-import renderFood from "../components/Food/render";
-import addFood from "../components/Food/add";
 import Login from "../views/Login";
 import store from "../store";
 import Registration from "../views/Register";
@@ -24,17 +21,6 @@ let router = new VueRouter({
       name: "home",
       path: "/",
       component: Home,
-    },
-    {
-      path: "/food",
-      component: Food,
-      children: [
-        { path: "", component: renderFood },
-        { path: "add", component: addFood },
-      ],
-      meta: {
-        needGroup: true,
-      },
     },
     {
       path: "/login",
