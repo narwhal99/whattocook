@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="4" align="center">
-      <v-card dark>
+      <v-card dark >
         <v-card-title>
           <v-row justify="center" align="center">Join to a Group </v-row>
         </v-card-title>

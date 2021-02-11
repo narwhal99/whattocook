@@ -8,6 +8,7 @@
         <v-list-item-title>Password change</v-list-item-title>
       </v-list-item>
     </v-list>
+
   </v-card>
 </template>
 

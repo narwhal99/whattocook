@@ -10,6 +10,7 @@ import GroupRender from "../components/Group/render";
 import Recipe from "../views/Recipe";
 import RecipeAdd from "../components/Recipe/add";
 import RecipeRender from "../components/Recipe/render";
+import RecipeFull from "../components/Recipe/render/fullRender";
 import shopList from "../views/ShopList";
 import Settings from '../views/Settings.vue'
 import SettingsUser from "../components/Settings/Profile.vue"
@@ -72,10 +73,21 @@ let router = new VueRouter({
           path: "add",
           component: RecipeAdd,
         },
+        {
+          path: ":id", component: RecipeFull,
+          beforeEnter: (to, from, next) => {
+            store.dispatch('getRecipe', to.params.id)
+            next()
+          },
+        }
       ],
       meta: {
         needGroup: true,
       },
+      beforeEnter: (to, from, next) => {
+        store.dispatch("getMyRecipes");
+        next()
+      }
     },
     {
       path: "/shoplist",

@@ -26,6 +26,27 @@ router.post("/recipe", auth, authGroup, async (req, res) => {
   }
 });
 
+router.get('/recipe/:id', auth, async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id)
+    if (!recipe) {
+      res.status(404).json({
+        success: false,
+        message: "Unable to find recipe"
+      })
+    }
+    res.status(200).json({
+      success: true,
+      recipe
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+})
+
 router.get("/recipes", auth, authGroup, async (req, res) => {
   try {
     await req.user.populate("recipe").execPopulate(async function (err, user) {
@@ -39,20 +60,6 @@ router.get("/recipes", auth, authGroup, async (req, res) => {
           success: true,
           recipes: user.recipe,
         });
-        // user.recipe.map(async (recipe) => {
-        //   recipe.ingredients.map(async (ingredient) => {
-        //     await req.user.group
-        //       .populate({
-        //         path: "foods",
-        //         match: {
-        //           name: ingredient.name,
-        //         },
-        //       })
-        //       .execPopulate(function (err, food) {
-        //         console.log(food.foods);
-        //       });
-        //   });
-        // });
       } else {
         res.json({
           success: false,

@@ -1,6 +1,6 @@
 <template>
-  <v-row >
-    <v-col cols="12" sm="3" md="2" justify="center" align="center" >
+  <v-row>
+    <v-col cols="12" sm="3" md="2" justify="center" align="center">
       <FilterApp />
     </v-col>
     <v-col cols="12" sm="9" md="10">
@@ -17,9 +17,6 @@ export default {
   components: {
     appExpansionPanel,
     FilterApp,
-  },
-  created() {
-    this.$store.dispatch("getMyRecipes");
   },
 };
 </script>

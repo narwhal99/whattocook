@@ -45,5 +45,8 @@ export default {
   },
   updateMyProfile(euser) {
     return Api.patch('user/me', euser)
+  },
+  getRecipe(recipeID) {
+    return Api.get('/recipe/' + recipeID)
   }
 };

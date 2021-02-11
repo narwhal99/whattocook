@@ -31,14 +31,13 @@
                   <template v-for="(ingredient, i) in recipe.ingredients">
                     <v-hover v-slot="{ hover }" :key="i">
                       <v-list-item
-                        inactive
                         :key="i"
                         :class="hover ? 'gray-hover' : 'none'"
                       >
                         <v-list-item-content>
-                          <v-list-item-title
-                            v-text="ingredient.name"
-                          ></v-list-item-title>
+                          <v-col class="mb-2 pa-0">
+                            {{ ingredient.name }}</v-col
+                          >
                           <v-list-item-subtitle>
                             {{ ingredient.quantity + " " + ingredient.unit }}
                           </v-list-item-subtitle>
@@ -52,21 +51,27 @@
                 <v-col><h3>Preparation:</h3> </v-col>
               </v-row>
               <v-divider />
-              <v-row
-                v-for="(prep, i) in recipe.preparation"
-                :key="i"
-                :class="{ even: i % 2, odd: !(i % 2) }"
-              >
-                <v-col> {{ i + 1 }}. {{ prep }} </v-col>
-              </v-row>
-              <v-row>
-                <v-col><h3>Description:</h3> </v-col>
-              </v-row>
+              <v-list>
+                <v-list-item-group>
+                  <template v-for="(prep, i) in recipe.preparation">
+                    <v-list-item :key="i">
+                      <v-list-item-content style="color: black">
+                        <v-col> {{ i + 1 }}. {{ prep }} </v-col>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
+                </v-list-item-group>
+              </v-list>
               <v-divider />
+              <v-col>
+                <h3>Description:</h3>
+              </v-col>
               <v-row>
                 <v-col> {{ recipe.description }} </v-col>
               </v-row>
-              <v-btn small outlined>Open recipe</v-btn>
+              <v-btn small outlined :to="'/recipe/' + recipe._id"
+                >Open recipe</v-btn
+              >
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>

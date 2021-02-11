@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col align="center" cols="8" lg="5">
+    <v-col align="center" cols="12" md="5">
       <v-card>
         <v-form
           ref="UpdateProfileFORM"
@@ -24,6 +24,11 @@
         </v-form>
       </v-card>
     </v-col>
+    <v-col cols="12" md="2">
+      <v-row justify="center" align="center">
+        <v-btn outlined @click="logout">Logout</v-btn>
+      </v-row>
+    </v-col>
   </v-row>
 </template>
 
@@ -41,6 +46,10 @@ export default {
     };
   },
   methods: {
+    logout() {
+      this.$store.dispatch("logout");
+      this.$router.go();
+    },
     async updateMyProfile() {
       if (this.$refs.UpdateProfileFORM.validate()) {
         try {
