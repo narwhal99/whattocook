@@ -136,9 +136,10 @@
                       </template>
                     </v-list-item-group>
                   </v-col>
-                  <v-row justify="center">
-                    <v-btn outlined color="green" @click="ingredientPlus"
-                      >Sor hozzáadás</v-btn
+                  <v-row justify="end">
+                    <v-btn text @click="ingredientPlus"
+                      >Hozzávaló hozzáadása
+                      <v-icon dark right>add_box</v-icon></v-btn
                     >
                   </v-row>
                 </v-list>
@@ -153,11 +154,11 @@
                         <v-list-item :key="i" inactive>
                           <v-list-item-content style="color: black">
                             <v-textarea
+                              :prefix="i + 1 + '.'"
                               append-outer-icon="mdi-delete"
                               @click:append-outer="ingredientMinusPrep(i)"
                               rows="1"
                               auto-grow
-                              :prefix="i + 1 + '.'"
                               v-model="prep.value"
                             ></v-textarea>
                           </v-list-item-content>
@@ -165,9 +166,10 @@
                       </template>
                     </v-list-item-group>
                   </v-col>
-                  <v-row justify="center">
-                    <v-btn outlined color="green" @click="ingredientPlusPrep"
-                      >Sor hozzáadás</v-btn
+                  <v-row justify="end">
+                    <v-btn text @click="ingredientPlusPrep"
+                      >További lépés hozzáadása
+                      <v-icon dark right>add_box</v-icon></v-btn
                     >
                   </v-row>
                 </v-list>

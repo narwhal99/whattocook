@@ -18,9 +18,7 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
-              <v-col>
-                <v-divider />
-              </v-col>
+              <v-divider />
               <v-row>
                 <v-col class="black--text">
                   <h1>Hozzávalók:</h1>
@@ -35,7 +33,7 @@
                     @change="addNewLineIng(index)"
                   ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col cols="2">
                   <v-text-field
                     solo
                     type="number"
@@ -43,7 +41,7 @@
                     v-model="data.quantity"
                   ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col cols="3">
                   <v-select
                     append-outer-icon="mdi-delete"
                     @click:append-outer="ingredientMinusIng(index)"
@@ -61,12 +59,12 @@
                   <v-icon dark right>add_box</v-icon></v-btn
                 >
               </v-row>
-              <v-col>
-                <v-divider />
-              </v-col>
-              <v-col class="black--text">
-                <h1>Étel elkészítése:</h1>
-              </v-col>
+              <v-divider />
+              <v-row>
+                <v-col class="black--text">
+                  <h1>Étel elkészítése:</h1>
+                </v-col>
+              </v-row>
               <v-row
                 v-for="(data, index) in this.recipe.preparation"
                 :key="'A' + index"
@@ -89,14 +87,12 @@
                   <v-icon dark right>add_box</v-icon></v-btn
                 >
               </v-row>
-              <v-col>
-                <v-divider />
-              </v-col>
-              <v-col>
-                <v-row justify="center">
-                  <h3>Leírás:</h3>
-                </v-row>
-              </v-col>
+              <v-divider />
+              <v-row justify="start">
+                <v-col class="black--text">
+                  <h1>Leírás:</h1>
+                </v-col>
+              </v-row>
               <v-row>
                 <v-col>
                   <v-textarea
@@ -105,6 +101,11 @@
                     v-model="recipe.description"
                     :rules="[(v) => !!v || 'Kérlek töltsd ki!']"
                   ></v-textarea>
+                </v-col>
+              </v-row>
+              <v-row justify="start">
+                <v-col cols="6">
+                  <v-select outlined label="Tags" multiple :items="tags">asd</v-select>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -138,6 +139,7 @@ export default {
       snackbarTimeout: 2000,
       snackbarText: "",
       snackbar: false,
+      tags:['Torta', 'Ebéd', 'Reggeli'],
       foodUnit: [
         "db",
         "kg",
