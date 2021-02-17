@@ -167,13 +167,7 @@ export default {
               this.recipe.ingredients.splice(i, 1);
             }
           }
-          const resp = await this.$store.dispatch(
-            "addRecipe",
-            (this.recipe = {
-              ...this.recipe,
-              preparation: this.recipe.preparation.map((data) => data.value),
-            })
-          );
+          const resp = await this.$store.dispatch("addRecipe", this.recipe);
           if (resp.status === 201) {
             this.snackbar = true;
             this.snackbarText = "Sikeressen hozzáadatad a receptet!";

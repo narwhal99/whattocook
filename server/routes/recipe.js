@@ -2,6 +2,7 @@ const router = require("express").Router();
 const auth = require("../middleware/verify-token");
 const Recipe = require("../models/recipe");
 const authGroup = require("../middleware/verify-group");
+const { findByIdAndDelete } = require("../models/recipe");
 
 router.post("/recipe", auth, authGroup, async (req, res) => {
   try {
@@ -29,16 +30,17 @@ router.post("/recipe", auth, authGroup, async (req, res) => {
 router.get('/recipe/:id', auth, async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id)
-    if (!recipe) {
+    if (recipe == null) {
       res.status(404).json({
         success: false,
         message: "Unable to find recipe"
       })
+    } else {
+      res.status(200).json({
+        success: true,
+        recipe
+      })
     }
-    res.status(200).json({
-      success: true,
-      recipe
-    })
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -76,7 +78,9 @@ router.get("/recipes", auth, authGroup, async (req, res) => {
 });
 
 router.put("/recipe/:id", auth, async (req, res) => {
-  console.log(req.body)
+  console.log(req.body.preparation.map(prep => ({
+    value: prep.value
+  })))
   try {
     await Recipe.findOne({ _id: req.params.id })
       .populate("owner")
@@ -91,11 +95,14 @@ router.put("/recipe/:id", auth, async (req, res) => {
             recipe != null &&
             recipe.owner._id.toString() == req.user._id.toString()
           ) {
+
             await Recipe.updateOne(
               { _id: req.params.id },
               {
                 name: req.body.name,
-                preparation: req.body.preparation,
+                preparation: req.body.preparation.map(prep => ({
+                  value: prep.value
+                })),
                 ingredients: req.body.ingredients,
                 description: req.body.description
               }
@@ -119,6 +126,28 @@ router.put("/recipe/:id", auth, async (req, res) => {
     });
   }
 });
+
+router.delete("/recipe/:id", auth, async (req, res) => {
+  try {
+    await Recipe.findByIdAndDelete(req.params.id, function (err) {
+      if (err) {
+        res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: "You successfully removed a recipe!",
+      });
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+})
 
 // const differenceCalculation = (ingredient, fridgeFood) => {};
 module.exports = router;

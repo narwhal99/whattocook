@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+
 Vue.use(Vuex);
 
 import connectServices from "../services/connectServices";
@@ -168,6 +169,16 @@ export default new Vuex.Store({
       commit("SET_LOADING");
       try {
         return await connectServices.saveRecipe(editedRecipe)
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async removeRecipe({ commit,dispatch }, recipeID) {
+      commit("SET_LOADING");
+      try {
+        const resp = await connectServices.removeRecipe(recipeID)
+        dispatch('getMyRecipes')
+        return resp
       } catch (err) {
         console.log(err)
       }

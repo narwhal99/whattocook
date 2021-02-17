@@ -51,5 +51,8 @@ export default {
   },
   saveRecipe(editedRecipe) {
     return Api.put('/recipe/' + editedRecipe._id, editedRecipe)
+  },
+  removeRecipe(recipeID) {
+    return Api.delete("/recipe/" + recipeID)
   }
 };

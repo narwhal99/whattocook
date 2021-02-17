@@ -37,7 +37,7 @@
               <template v-for="(prep, i) in myRecipe.preparation">
                 <v-list-item :key="i">
                   <v-list-item-content style="color: black">
-                    <v-col> {{ i + 1 }}. {{ prep }} </v-col>
+                    <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
                   </v-list-item-content>
                 </v-list-item>
               </template>
@@ -78,7 +78,9 @@
                   </template>
                   <v-list>
                     <v-list-item>
-                      <v-btn text style="color: red">Recept törlése</v-btn>
+                      <v-btn text style="color: red" @click="removeRecipe"
+                        >Recept törlése</v-btn
+                      >
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -151,10 +153,12 @@
                         <v-list-item :key="i" inactive>
                           <v-list-item-content style="color: black">
                             <v-textarea
+                              append-outer-icon="mdi-delete"
+                              @click:append-outer="ingredientMinusPrep(i)"
                               rows="1"
                               auto-grow
                               :prefix="i + 1 + '.'"
-                              :value="prep"
+                              v-model="prep.value"
                             ></v-textarea>
                           </v-list-item-content>
                         </v-list-item>
@@ -162,7 +166,9 @@
                     </v-list-item-group>
                   </v-col>
                   <v-row justify="center">
-                    <v-btn outlined color="green">Sor hozzáadás</v-btn>
+                    <v-btn outlined color="green" @click="ingredientPlusPrep"
+                      >Sor hozzáadás</v-btn
+                    >
                   </v-row>
                 </v-list>
                 <v-divider />
@@ -196,6 +202,7 @@
 
 <script>
 let moment = require("moment");
+
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -217,17 +224,23 @@ export default {
     };
   },
   methods: {
-    async save() {
+    async removeRecipe() {
       const resp = await this.$store.dispatch(
-        "saveRecipe",
-        (this.editingRecipe = {
-          ...this.editingRecipe,
-          preparation: this.editingRecipe.preparation.map((data) => data.value),
-        })
+        "removeRecipe",
+        this.editingRecipe._id
       );
+      if (resp.status === 200) {
+        this.$router.push("/recipe");
+      }
+    },
+    async save() {
+      const resp = await this.$store.dispatch("saveRecipe", this.editingRecipe);
       if (resp.status === 200) {
         this.$router.go();
       }
+    },
+    ingredientPlusPrep() {
+      this.editingRecipe.preparation.push({ value: "" });
     },
     ingredientPlus() {
       this.editingRecipe.ingredients.push({

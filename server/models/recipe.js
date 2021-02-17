@@ -22,7 +22,9 @@ const RecipeSchema = new Schema({
   ],
   preparation: [
     {
-      type: String,
+      value: {
+        type: String,
+      }
     },
   ],
   description: {

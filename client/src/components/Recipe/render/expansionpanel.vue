@@ -56,7 +56,7 @@
                   <template v-for="(prep, i) in recipe.preparation">
                     <v-list-item :key="i">
                       <v-list-item-content style="color: black">
-                        <v-col> {{ i + 1 }}. {{ prep }} </v-col>
+                        <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
                       </v-list-item-content>
                     </v-list-item>
                   </template>
