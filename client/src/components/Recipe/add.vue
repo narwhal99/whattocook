@@ -4,17 +4,15 @@
       <v-col lg="9" xl="6">
         <v-form ref="mainForm" @submit="submit">
           <v-card raised class="px-4" style="background: #f8c471">
-            <v-card-title>
-              <v-row justify="center">
-                <h3>Recept hozzáadás</h3>
-              </v-row>
-            </v-card-title>
+            <v-col class="black--text">
+              <h1>Recept hozzáadás</h1>
+            </v-col>
             <v-card-text>
               <v-row>
                 <v-col>
                   <v-text-field
                     solo
-                    label="Recept neve"
+                    label="Név"
                     v-model="recipe.name"
                     :rules="[(v) => !!v || 'Kérlek töltsd ki!']"
                   ></v-text-field>
@@ -23,14 +21,16 @@
               <v-col>
                 <v-divider />
               </v-col>
-              <v-row justify="center">
-                <h3>Hozzávalók:</h3>
+              <v-row>
+                <v-col class="black--text">
+                  <h1>Hozzávalók:</h1>
+                </v-col>
               </v-row>
               <v-row v-for="(data, index) in recipe.ingredients" :key="index">
                 <v-col>
                   <v-text-field
                     solo
-                    label="Hozzá való"
+                    label="Alapanyag"
                     v-model="data.name"
                     @change="addNewLineIng(index)"
                   ></v-text-field>
@@ -50,40 +50,43 @@
                     solo
                     :items="foodUnit"
                     v-model="data.unit"
-                    label="Mennyiség"
+                    label="Mértékegység"
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-row justify="center">
-                <v-btn outlined @click="ingredientPlus">Sor hozzáadás</v-btn>
+
+              <v-row justify="end">
+                <v-btn text @click="ingredientPlus"
+                  >Hozzávaló hozzáadása
+                  <v-icon dark right>add_box</v-icon></v-btn
+                >
               </v-row>
               <v-col>
                 <v-divider />
               </v-col>
-              <v-col>
-                <v-row justify="center">
-                  <h3>Étel elkészítése:</h3>
-                </v-row>
+              <v-col class="black--text">
+                <h1>Étel elkészítése:</h1>
               </v-col>
               <v-row
                 v-for="(data, index) in this.recipe.preparation"
                 :key="'A' + index"
               >
-                <v-col cols="1">
-                  <h3>{{ index + 1 }}.</h3>
+                <v-col>
+                  <v-text-field
+                    :prefix="index + 1 + '.'"
+                    solo
+                    label="Leírás"
+                    v-model="data.value"
+                    :key="index"
+                    append-outer-icon="mdi-delete"
+                    @click:append-outer="ingredientMinusPrep(index)"
+                  ></v-text-field>
                 </v-col>
-                <v-text-field
-                  solo
-                  label="Elkészítés"
-                  v-model="data.value"
-                  :key="index"
-                  append-outer-icon="mdi-delete"
-                  @click:append-outer="ingredientMinusPrep(index)"
-                ></v-text-field>
               </v-row>
-              <v-row justify="center">
-                <v-btn outlined @click="ingredientPlusPrep"
-                  >Sor hozzáadás</v-btn
+              <v-row justify="end">
+                <v-btn text @click="ingredientPlusPrep"
+                  >További lépés hozzáadása
+                  <v-icon dark right>add_box</v-icon></v-btn
                 >
               </v-row>
               <v-col>
@@ -106,7 +109,11 @@
               </v-row>
             </v-card-text>
             <v-card-actions>
-              <v-btn color="#ba3939" type="submit">Hozzáadás</v-btn>
+              <v-row justify="center">
+                <v-btn outlined type="submit"
+                  >Recept mentése <v-icon right>save</v-icon></v-btn
+                >
+              </v-row>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -148,7 +155,7 @@ export default {
         ingredients: [
           {
             name: "",
-            quantity: 0,
+            quantity: null,
             unit: "",
           },
         ],

@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="4" align="center">
-      <v-card dark >
+    <v-col cols="12" md="5" align="center">
+      <v-card dark>
         <v-card-title>
           <v-row justify="center" align="center">Join to a Group </v-row>
         </v-card-title>
@@ -9,7 +9,7 @@
           <v-card-text>
             <v-text-field label="Group ID" v-model="groupID"></v-text-field>
             <p v-if="errorMsg" class="red--text">{{ errorMsg }}</p>
-            <h3 class=" pb-3">Or</h3>
+            <h3 class="pb-3">Or</h3>
             <v-btn @click="createGroupSubmit">Create a group</v-btn>
           </v-card-text>
           <v-card-actions>

@@ -30,6 +30,9 @@ const RecipeSchema = new Schema({
   description: {
     type: String,
   },
+  tags: [{
+    type: String
+  }],
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",

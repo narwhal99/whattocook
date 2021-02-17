@@ -225,12 +225,14 @@ export default {
   },
   methods: {
     async removeRecipe() {
-      const resp = await this.$store.dispatch(
-        "removeRecipe",
-        this.editingRecipe._id
-      );
-      if (resp.status === 200) {
-        this.$router.push("/recipe");
+      if (confirm("Biztosan törölni szeretéd a receptet?")) {
+        const resp = await this.$store.dispatch(
+          "removeRecipe",
+          this.editingRecipe._id
+        );
+        if (resp.status === 200) {
+          this.$router.push("/recipe");
+        }
       }
     },
     async save() {
