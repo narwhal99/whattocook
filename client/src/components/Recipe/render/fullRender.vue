@@ -68,7 +68,7 @@
                 <v-toolbar-title>Étel szerkesztése</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                  <v-btn text>Save</v-btn>
+                  <v-btn text @click="save">Save</v-btn>
                 </v-toolbar-items>
                 <v-menu bottom right offset-y>
                   <template v-slot:activator="{ on }">
@@ -171,6 +171,8 @@
                   <v-row>
                     <v-col>
                       <v-textarea
+                        rows="1"
+                        auto-grow
                         label="Leírás"
                         v-model="editingRecipe.description"
                       ></v-textarea>
@@ -215,6 +217,18 @@ export default {
     };
   },
   methods: {
+    async save() {
+      const resp = await this.$store.dispatch(
+        "saveRecipe",
+        (this.editingRecipe = {
+          ...this.editingRecipe,
+          preparation: this.editingRecipe.preparation.map((data) => data.value),
+        })
+      );
+      if (resp.status === 200) {
+        this.$router.go();
+      }
+    },
     ingredientPlus() {
       this.editingRecipe.ingredients.push({
         name: "",

@@ -76,6 +76,7 @@ router.get("/recipes", auth, authGroup, async (req, res) => {
 });
 
 router.put("/recipe/:id", auth, async (req, res) => {
+  console.log(req.body)
   try {
     await Recipe.findOne({ _id: req.params.id })
       .populate("owner")
@@ -92,7 +93,12 @@ router.put("/recipe/:id", auth, async (req, res) => {
           ) {
             await Recipe.updateOne(
               { _id: req.params.id },
-              { name: req.body.name }
+              {
+                name: req.body.name,
+                preparation: req.body.preparation,
+                ingredients: req.body.ingredients,
+                description: req.body.description
+              }
             );
             res.json({
               success: true,

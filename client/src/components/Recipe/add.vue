@@ -177,7 +177,6 @@ export default {
           if (resp.status === 201) {
             this.snackbar = true;
             this.snackbarText = "Sikeressen hozzáadatad a receptet!";
-
             this.$refs.mainForm.reset();
           } else {
             console.log(resp);

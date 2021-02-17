@@ -48,5 +48,8 @@ export default {
   },
   getRecipe(recipeID) {
     return Api.get('/recipe/' + recipeID)
+  },
+  saveRecipe(editedRecipe) {
+    return Api.put('/recipe/' + editedRecipe._id, editedRecipe)
   }
 };

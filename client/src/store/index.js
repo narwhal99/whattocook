@@ -164,6 +164,14 @@ export default new Vuex.Store({
         console.log(err)
       }
     },
+    async saveRecipe({ commit }, editedRecipe) {
+      commit("SET_LOADING");
+      try {
+        return await connectServices.saveRecipe(editedRecipe)
+      } catch (err) {
+        console.log(err)
+      }
+    },
     async leaveGroup({ commit }) {
       commit("SET_LOADING");
       try {
