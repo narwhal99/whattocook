@@ -11,8 +11,23 @@
         </v-card-title>
         <v-divider />
         <v-card-text style="color: black">
+          <v-row justify="center">
+                <v-col cols="1">
+                  <v-icon color="black">add</v-icon>
+                </v-col>
+                <v-col cols="1">
+                  <strong> {{ myRecipe.peopleamount }}</strong
+                  ><br />
+                  <p class="subtitle-2">Főre</p>
+                </v-col>
+                <v-col cols="1">
+                  <v-icon color="black">remove</v-icon>
+                </v-col>
+              </v-row>
           <v-list>
-            <h3>Ingredients</h3>
+            <v-col>
+              <h3>Ingredients</h3>
+            </v-col>
             <v-list-item-group>
               <template v-for="(ingredient, i) in myRecipe.ingredients">
                 <v-list-item :key="i">
@@ -50,9 +65,18 @@
           <v-row>
             <v-col> {{ myRecipe.description }} </v-col>
           </v-row>
-          <v-row>
-            <v-btn outlined x-small @click="editRecipe"> Edit</v-btn>
-          </v-row>
+          <v-divider />
+          <v-col>
+            <v-row>
+              <v-btn outlined x-small @click="editRecipe"> Edit</v-btn>
+              <v-spacer />
+              <template v-for="(tags, i) in myRecipe.tags">
+                <v-btn outlined x-small :key="i" class="mr-1" color="grey">{{
+                  tags
+                }}</v-btn>
+              </template>
+            </v-row>
+          </v-col>
           <v-dialog
             fullscreen
             hide-overlay
@@ -179,20 +203,61 @@
                   <v-row>
                     <v-col>
                       <v-textarea
-                        rows="1"
+                        rows="2"
                         auto-grow
                         label="Leírás"
                         v-model="editingRecipe.description"
                       ></v-textarea>
                     </v-col>
                   </v-row>
-                  <v-row>
-                    <v-col class="grey--text darken-3"
-                      >Hozzáadva:
-                      {{ formatDate(editingRecipe.addedTime) }}</v-col
-                    >
-                  </v-row>
                 </v-list>
+                <v-row justify="center">
+                  <v-col>
+                    <h2>Jellemzők:</h2>
+                  </v-col>
+                </v-row>
+                <v-row justify="center">
+                  <v-col cols="6">
+                    <v-combobox
+                      v-model="editingRecipe.tags"
+                      outlined
+                      :search-input.sync="tagSearch"
+                      hide-selected
+                      label="Válassz ki jellemzőket a recepthez"
+                      multiple
+                      persistent-hint
+                      small-chips
+                    >
+                      <template v-slot:no-data>
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              Nyomj <kbd>enter</kbd>-t hozzáadáshoz: "<strong>{{
+                                tagSearch
+                              }}</strong
+                              >"
+                            </v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-combobox>
+                  </v-col>
+                  <v-col cols="6" md="3">
+                    <v-select
+                      v-model="editingRecipe.peopleamount"
+                      :items="peopleamount"
+                      item-text="text"
+                      item-value="value"
+                      outlined
+                      label="Hány főre?"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="grey--text darken-3"
+                    >Hozzáadva: {{ formatDate(editingRecipe.addedTime) }}</v-col
+                  >
+                </v-row>
               </v-card-text>
             </v-card>
           </v-dialog>
@@ -209,6 +274,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      tagSearch: null,
       editDialog: false,
       editingRecipe: {},
       foodUnit: [
@@ -222,6 +288,52 @@ export default {
         "evőkanál",
         "kiskanál",
         "csipet",
+      ],
+      peopleamount: [
+        {
+          text: "Adag",
+          value: 0,
+        },
+        {
+          text: "1 Főre",
+          value: 1,
+        },
+        {
+          text: "2 Főre",
+          value: 2,
+        },
+        {
+          text: "3 Főre",
+          value: 3,
+        },
+        {
+          text: "4 Főre",
+          value: 4,
+        },
+        {
+          text: "5 Főre",
+          value: 5,
+        },
+        {
+          text: "6 Főre",
+          value: 6,
+        },
+        {
+          text: "7 Főre",
+          value: 7,
+        },
+        {
+          text: "8 Főre",
+          value: 8,
+        },
+        {
+          text: "9 Főre",
+          value: 9,
+        },
+        {
+          text: "10 Főre",
+          value: 10,
+        },
       ],
     };
   },

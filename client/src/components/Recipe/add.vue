@@ -104,8 +104,45 @@
                 </v-col>
               </v-row>
               <v-row justify="start">
+                <v-col class="black--text">
+                  <h1>Jellemzők:</h1>
+                </v-col>
+              </v-row>
+              <v-row justify="start">
                 <v-col cols="6">
-                  <v-select outlined label="Tags" multiple :items="tags">asd</v-select>
+                  <v-combobox
+                    v-model="recipe.tags"
+                    solo
+                    :search-input.sync="tagSearch"
+                    hide-selected
+                    label="Válassz ki jellemzőket a recepthez"
+                    multiple
+                    persistent-hint
+                    small-chips
+                  >
+                    <template v-slot:no-data>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            Nyomj <kbd>enter</kbd>-t hozzáadáshoz: "<strong>{{
+                              tagSearch
+                            }}</strong
+                            >"
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </template>
+                  </v-combobox>
+                </v-col>
+                <v-col cols="6" md="3">
+                  <v-select
+                    v-model="recipe.peopleamount"
+                    :items="peopleamount"
+                    item-text="text"
+                    item-value="value"
+                    solo
+                    label="Hány főre?"
+                  ></v-select>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -135,11 +172,11 @@
 export default {
   data() {
     return {
+      tagSearch: null,
       snackbarColor: "success",
       snackbarTimeout: 2000,
       snackbarText: "",
       snackbar: false,
-      tags:['Torta', 'Ebéd', 'Reggeli'],
       foodUnit: [
         "db",
         "kg",
@@ -163,7 +200,55 @@ export default {
         ],
         description: "",
         preparation: [{ value: "" }],
+        tags: [],
+        peopleamount: null,
       },
+      peopleamount: [
+        {
+          text: "Adag",
+          value: 0,
+        },
+        {
+          text: "1 Főre",
+          value: 1,
+        },
+        {
+          text: "2 Főre",
+          value: 2,
+        },
+        {
+          text: "3 Főre",
+          value: 3,
+        },
+        {
+          text: "4 Főre",
+          value: 4,
+        },
+        {
+          text: "5 Főre",
+          value: 5,
+        },
+        {
+          text: "6 Főre",
+          value: 6,
+        },
+        {
+          text: "7 Főre",
+          value: 7,
+        },
+        {
+          text: "8 Főre",
+          value: 8,
+        },
+        {
+          text: "9 Főre",
+          value: 9,
+        },
+        {
+          text: "10 Főre",
+          value: 10,
+        },
+      ],
     };
   },
   methods: {

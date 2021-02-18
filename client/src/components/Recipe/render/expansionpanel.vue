@@ -14,18 +14,31 @@
             <!-- RECIPE NAME  -->
             <v-expansion-panel-header>
               <v-row>
-                <v-col>
-                  <h3>{{ recipe.name }}</h3>
+                <v-col align="center">
+                  <h2>{{ recipe.name }}</h2>
                 </v-col>
               </v-row>
             </v-expansion-panel-header>
             <v-expansion-panel-content align="center">
-              <v-row>
-                <v-col>
-                  <h3>Ingredients:</h3>
+              <v-divider />
+              <v-row justify="center">
+                <v-col cols="1">
+                  <v-icon color="black">add</v-icon>
+                </v-col>
+                <v-col cols="1">
+                  <strong> {{ recipe.peopleamount }}</strong
+                  ><br />
+                  <p class="subtitle-2">Főre</p>
+                </v-col>
+                <v-col cols="1">
+                  <v-icon color="black">remove</v-icon>
                 </v-col>
               </v-row>
-              <v-divider />
+              <v-row>
+                <v-col>
+                  <h3>Hozzávalók</h3>
+                </v-col>
+              </v-row>
               <v-list>
                 <v-list-item-group>
                   <template v-for="(ingredient, i) in recipe.ingredients">
@@ -47,10 +60,10 @@
                   </template>
                 </v-list-item-group>
               </v-list>
-              <v-row>
-                <v-col><h3>Preparation:</h3> </v-col>
-              </v-row>
               <v-divider />
+              <v-row>
+                <v-col><h3>Elkészítése</h3> </v-col>
+              </v-row>
               <v-list>
                 <v-list-item-group>
                   <template v-for="(prep, i) in recipe.preparation">
@@ -67,11 +80,24 @@
                 <h3>Description:</h3>
               </v-col>
               <v-row>
-                <v-col> {{ recipe.description }} </v-col>
+                <v-col>
+                  {{ recipe.description }}
+                </v-col>
               </v-row>
-              <v-btn small outlined :to="'/recipe/' + recipe._id"
-                >Open recipe</v-btn
-              >
+              <v-col>
+                <v-row justify="center">
+                  <v-btn small outlined :to="'/recipe/' + recipe._id"
+                    >Open recipe</v-btn
+                  >
+                </v-row>
+              </v-col>
+              <v-row justify="end">
+                <template v-for="(tags, i) in recipe.tags">
+                  <v-btn outlined x-small :key="i" class="mr-1" color="grey">{{
+                    tags
+                  }}</v-btn>
+                </template>
+              </v-row>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>

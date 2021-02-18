@@ -2,16 +2,17 @@ const router = require("express").Router();
 const auth = require("../middleware/verify-token");
 const Recipe = require("../models/recipe");
 const authGroup = require("../middleware/verify-group");
-const { findByIdAndDelete } = require("../models/recipe");
 
-router.post("/recipe", auth, authGroup, async (req, res) => {
+router.post("/recipe", auth, async (req, res) => {
   try {
     const recipe = new Recipe();
     recipe.name = req.body.name;
     recipe.preparation = req.body.preparation;
     recipe.description = req.body.description;
     recipe.ingredients = req.body.ingredients;
+    recipe.tags = req.body.tags;
     recipe.owner = req.user._id;
+    recipe.peopleamount = req.body.peopleamount;
 
     await recipe.save();
 
@@ -49,7 +50,7 @@ router.get('/recipe/:id', auth, async (req, res) => {
   }
 })
 
-router.get("/recipes", auth, authGroup, async (req, res) => {
+router.get("/recipes", auth, async (req, res) => {
   try {
     await req.user.populate("recipe").execPopulate(async function (err, user) {
       if (err) {
@@ -78,9 +79,6 @@ router.get("/recipes", auth, authGroup, async (req, res) => {
 });
 
 router.put("/recipe/:id", auth, async (req, res) => {
-  console.log(req.body.preparation.map(prep => ({
-    value: prep.value
-  })))
   try {
     await Recipe.findOne({ _id: req.params.id })
       .populate("owner")
@@ -95,7 +93,6 @@ router.put("/recipe/:id", auth, async (req, res) => {
             recipe != null &&
             recipe.owner._id.toString() == req.user._id.toString()
           ) {
-
             await Recipe.updateOne(
               { _id: req.params.id },
               {
@@ -104,7 +101,9 @@ router.put("/recipe/:id", auth, async (req, res) => {
                   value: prep.value
                 })),
                 ingredients: req.body.ingredients,
-                description: req.body.description
+                description: req.body.description,
+                tags: req.body.tags,
+                peopleamount: req.body.peopleamount
               }
             );
             res.json({

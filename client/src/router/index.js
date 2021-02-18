@@ -81,9 +81,6 @@ let router = new VueRouter({
           },
         }
       ],
-      meta: {
-        needGroup: true,
-      },
       beforeEnter: (to, from, next) => {
         store.dispatch("getMyRecipes");
         next()

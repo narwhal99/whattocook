@@ -74,7 +74,7 @@
             >
           </v-hover>
         </v-col>
-        <v-col align="center" class="pa-0 ma-0" v-if="haveGroup">
+        <v-col align="center" class="pa-0 ma-0" >
           <v-hover v-slot="{ hover }">
             <v-btn
               outlined

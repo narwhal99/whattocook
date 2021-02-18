@@ -20,6 +20,9 @@ const RecipeSchema = new Schema({
       },
     },
   ],
+  peopleamount: {
+    type: Number
+  },
   preparation: [
     {
       value: {
