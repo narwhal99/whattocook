@@ -1,70 +1,95 @@
 <template>
   <v-row justify="center" align="center" v-if="myRecipe">
-    <v-col cols="10" align="center">
-      <v-card flat light>
+    <v-col cols="10" lg="6" align="center">
+      <v-card flat light color="#E5E8E8">
         <v-card-title>
-          <v-col>
-            <h2>
-              {{ myRecipe.name }}
-            </h2>
-          </v-col>
+          <v-row>
+            <v-col align="center">
+              <h2>
+                {{ myRecipe.name }}
+              </h2>
+            </v-col>
+          </v-row>
         </v-card-title>
         <v-divider />
         <v-card-text style="color: black">
           <v-row justify="center">
-                <v-col cols="1">
-                  <v-icon color="black">add</v-icon>
+            <v-col cols="12" md="8">
+              <v-card color="#CCD1D1">
+                <v-col>
+                  <h3>Elkészítése</h3>
                 </v-col>
-                <v-col cols="1">
-                  <strong> {{ myRecipe.peopleamount }}</strong
-                  ><br />
-                  <p class="subtitle-2">Főre</p>
-                </v-col>
-                <v-col cols="1">
-                  <v-icon color="black">remove</v-icon>
-                </v-col>
-              </v-row>
-          <v-list>
-            <v-col>
-              <h3>Ingredients</h3>
+                <v-list color="#F2F4F4" align="left">
+                  <v-list-item-group>
+                    <template v-for="(prep, i) in myRecipe.preparation">
+                      <v-list-item :key="i">
+                        <v-list-item-content style="color: black">
+                          <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </template>
+                  </v-list-item-group>
+                </v-list>
+              </v-card>
             </v-col>
-            <v-list-item-group>
-              <template v-for="(ingredient, i) in myRecipe.ingredients">
-                <v-list-item :key="i">
-                  <v-list-item-content style="color: black">
-                    <v-col class="mb-2 pa-0">
-                      {{ ingredient.name }}
-                    </v-col>
-                    <v-list-item-subtitle>
-                      {{ ingredient.quantity + " " + ingredient.unit }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
-            </v-list-item-group>
-          </v-list>
-          <v-divider />
-          <v-row>
-            <v-col><h3>Preparation:</h3> </v-col>
+            <v-col cols="12" md="3">
+              <v-card color="#CCD1D1">
+                <v-col>
+                  <h3>Hozzávalók</h3>
+                </v-col>
+                <v-row justify="center">
+                  <v-col>
+                    <v-icon color="black">add</v-icon>
+                  </v-col>
+                  <v-col>
+                    <strong> {{ myRecipe.peopleamount }}</strong
+                    ><br />
+                    <p class="subtitle-2">Főre</p>
+                  </v-col>
+                  <v-col>
+                    <v-icon color="black">remove</v-icon>
+                  </v-col>
+                </v-row>
+                <v-list color="#F2F4F4" align="left">
+                  <v-list-item-group multiple>
+                    <template v-for="(ingredient, i) in myRecipe.ingredients">
+                      <v-list-item :key="i">
+                        <template v-slot:default="{ active }">
+                          <v-list-item-content style="color: black">
+                            <v-col class="mb-0 pa-0">
+                              {{ ingredient.name }}
+                            </v-col>
+                            <v-list-item-subtitle>
+                              {{ ingredient.quantity + " " + ingredient.unit }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                          <v-list-item-action>
+                            <v-checkbox
+                              :input-value="active"
+                              color="deep-purple accent-4"
+                            ></v-checkbox>
+                          </v-list-item-action>
+                        </template>
+                      </v-list-item>
+                    </template>
+                  </v-list-item-group>
+                </v-list>
+              </v-card>
+            </v-col>
           </v-row>
-          <v-list>
-            <v-list-item-group>
-              <template v-for="(prep, i) in myRecipe.preparation">
-                <v-list-item :key="i">
-                  <v-list-item-content style="color: black">
-                    <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
-            </v-list-item-group>
-          </v-list>
           <v-divider />
-          <v-col>
-            <h3>Description:</h3>
+          <v-col cols="10">
+            <v-card color="#CCD1D1">
+              <v-col>
+                <h3>Description:</h3>
+              </v-col>
+              <v-list color="#F2F4F4" align="left">
+                <v-col>
+                  {{ myRecipe.description }}
+                </v-col>
+              </v-list>
+            </v-card>
           </v-col>
-          <v-row>
-            <v-col> {{ myRecipe.description }} </v-col>
-          </v-row>
           <v-divider />
           <v-col>
             <v-row>
@@ -116,6 +141,7 @@
                       <h2>Recipe name:</h2>
                     </v-col>
                     <v-text-field
+                      outlined
                       filled
                       hide-details
                       v-model="editingRecipe.name"
@@ -136,6 +162,7 @@
                           <v-list-item-content style="color: black">
                             <v-col cols="6">
                               <v-textarea
+                                outlined
                                 rows="1"
                                 auto-grow
                                 v-model="ingredient.name"
@@ -143,11 +170,15 @@
                               </v-textarea>
                             </v-col>
                             <v-col cols="3">
-                              <v-text-field v-model="ingredient.quantity">
+                              <v-text-field
+                                v-model="ingredient.quantity"
+                                outlined
+                              >
                               </v-text-field>
                             </v-col>
                             <v-col cols="3">
                               <v-select
+                                outlined
                                 append-outer-icon="mdi-delete"
                                 @click:append-outer="ingredientMinusIng(i)"
                                 v-model="ingredient.unit"
@@ -178,6 +209,7 @@
                         <v-list-item :key="i" inactive>
                           <v-list-item-content style="color: black">
                             <v-textarea
+                              outlined
                               :prefix="i + 1 + '.'"
                               append-outer-icon="mdi-delete"
                               @click:append-outer="ingredientMinusPrep(i)"
@@ -200,9 +232,10 @@
                 <v-divider />
                 <v-list>
                   <!-- description -->
-                  <v-row>
-                    <v-col>
+                  <v-row justify="center">
+                    <v-col cols="6">
                       <v-textarea
+                        outlined
                         rows="2"
                         auto-grow
                         label="Leírás"
@@ -288,6 +321,7 @@ export default {
         "evőkanál",
         "kiskanál",
         "csipet",
+        "teáskanál",
       ],
       peopleamount: [
         {

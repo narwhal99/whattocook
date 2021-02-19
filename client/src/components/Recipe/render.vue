@@ -3,7 +3,7 @@
     <v-col cols="12" sm="3" md="2" justify="center" align="center">
       <FilterApp />
     </v-col>
-    <v-col cols="12" sm="9" md="10">
+    <v-col cols="12" sm="9" md="8">
       <appExpansionPanel></appExpansionPanel>
     </v-col>
   </v-row>

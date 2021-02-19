@@ -188,6 +188,7 @@ export default {
         "evőkanál",
         "kiskanál",
         "csipet",
+        "teáskanál",
       ],
       recipe: {
         name: "",
