@@ -43,6 +43,7 @@
                 </v-col>
                 <v-col cols="3">
                   <v-select
+                    v-if="data.unit != 'Egyéb'"
                     append-outer-icon="mdi-delete"
                     @click:append-outer="ingredientMinusIng(index)"
                     solo
@@ -50,6 +51,14 @@
                     v-model="data.unit"
                     label="Mértékegység"
                   ></v-select>
+                  <v-text-field
+                    label="Mértékegység"
+                    v-else
+                    solo
+                    append-outer-icon="mdi-delete"
+                    @click:append-outer="ingredientMinusIng(index)"
+                  >
+                  </v-text-field>
                 </v-col>
               </v-row>
 
@@ -189,6 +198,7 @@ export default {
         "kiskanál",
         "csipet",
         "teáskanál",
+        "Egyéb",
       ],
       recipe: {
         name: "",

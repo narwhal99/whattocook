@@ -60,13 +60,10 @@
                       </v-col>
                     </v-row>
                     <v-list flat color="#F2F4F4" align="left">
-                      <v-list-item-group>
+                      <v-list-item-group multiple v-model="shoplistSelected">
                         <template v-for="(ingredient, i) in recipe.ingredients">
-                          <v-hover v-slot="{ hover }" :key="i">
-                            <v-list-item
-                              :key="i"
-                              :class="hover ? 'gray-hover' : 'none'"
-                            >
+                          <v-list-item :key="i" :value="ingredient">
+                            <template v-slot:default="{ active }">
                               <v-list-item-content>
                                 <v-col class="mb-0 pa-0">
                                   {{ ingredient.name }}</v-col
@@ -77,12 +74,25 @@
                                   }}
                                 </v-list-item-subtitle>
                               </v-list-item-content>
-                            </v-list-item>
-                          </v-hover>
+                              <v-list-item-action>
+                                <v-checkbox
+                                  :input-value="active"
+                                  color="deep-purple accent-4"
+                                ></v-checkbox>
+                              </v-list-item-action>
+                            </template>
+                          </v-list-item>
                         </template>
                       </v-list-item-group>
                     </v-list>
                   </v-card>
+                </v-col>
+              </v-row>
+              <v-row v-if="shoplistSelected.length > 0">
+                <v-col>
+                  <v-btn outlined small @click="submitToShoplist"
+                    >Bevásárló listára írása</v-btn
+                  >
                 </v-col>
               </v-row>
               <v-divider />
@@ -127,7 +137,21 @@ export default {
     return {
       searchFilter_input: "",
       selectedIngredients: [],
+      shoplistSelected: [],
     };
+  },
+  methods: {
+    async submitToShoplist() {
+      this.shoplistSelected.forEach(async (item) => {
+        const itemName = item.name + " " + item.quantity + " " + item.unit;
+        const resp = await this.$store.dispatch("shopItemSubmit", {
+          item: itemName,
+        });
+        if (resp.status == 201) {
+          this.shoplistSelected = [];
+        }
+      });
+    },
   },
   computed: {
     ...mapGetters(["myRecipes"]),
@@ -149,14 +173,5 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
-}
-.even {
-  background: #e5e7e9;
-}
-
-.gray-hover {
-  background: #f0f0f5;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
 }
 </style>

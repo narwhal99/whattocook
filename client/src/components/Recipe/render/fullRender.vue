@@ -51,9 +51,9 @@
                   </v-col>
                 </v-row>
                 <v-list color="#F2F4F4" align="left">
-                  <v-list-item-group multiple>
+                  <v-list-item-group multiple v-model="shoplistSelected">
                     <template v-for="(ingredient, i) in myRecipe.ingredients">
-                      <v-list-item :key="i">
+                      <v-list-item :key="i" :value="ingredient">
                         <template v-slot:default="{ active }">
                           <v-list-item-content style="color: black">
                             <v-col class="mb-0 pa-0">
@@ -75,6 +75,13 @@
                   </v-list-item-group>
                 </v-list>
               </v-card>
+            </v-col>
+          </v-row>
+          <v-row v-if="shoplistSelected.length > 0">
+            <v-col>
+              <v-btn outlined small @click="submitToShoplist"
+                >Bevásárló listára írása</v-btn
+              >
             </v-col>
           </v-row>
           <v-divider />
@@ -178,13 +185,22 @@
                             </v-col>
                             <v-col cols="3">
                               <v-select
+                                v-if="ingredient.unit != 'Egyéb'"
+                                append-outer-icon="mdi-delete"
+                                @click:append-outer="ingredientMinusIng(index)"
+                                outlined
+                                :items="foodUnit"
+                                v-model="ingredient.unit"
+                                label="Mértékegység"
+                              ></v-select>
+                              <v-text-field
+                               label="Mértékegység"
+                                v-else
                                 outlined
                                 append-outer-icon="mdi-delete"
-                                @click:append-outer="ingredientMinusIng(i)"
-                                v-model="ingredient.unit"
-                                :items="foodUnit"
+                                @click:append-outer="ingredientMinusIng(index)"
                               >
-                              </v-select>
+                              </v-text-field>
                             </v-col>
                           </v-list-item-content>
                         </v-list-item>
@@ -307,6 +323,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      shoplistSelected: [],
       tagSearch: null,
       editDialog: false,
       editingRecipe: {},
@@ -322,6 +339,7 @@ export default {
         "kiskanál",
         "csipet",
         "teáskanál",
+        "Egyéb",
       ],
       peopleamount: [
         {
@@ -372,6 +390,17 @@ export default {
     };
   },
   methods: {
+    async submitToShoplist() {
+      this.shoplistSelected.forEach(async (item) => {
+        const itemName = item.name + " " + item.quantity + " " + item.unit;
+        const resp = await this.$store.dispatch("shopItemSubmit", {
+          item: itemName,
+        });
+        if (resp.status == 201) {
+          this.shoplistSelected = [];
+        }
+      });
+    },
     async removeRecipe() {
       if (confirm("Biztosan törölni szeretéd a receptet?")) {
         const resp = await this.$store.dispatch(

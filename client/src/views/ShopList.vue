@@ -16,9 +16,7 @@
             </v-row>
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn outlined type="submit" width="100%" 
-              >Add</v-btn
-            >
+            <v-btn outlined type="submit" width="100%">Add</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -112,6 +110,7 @@ export default {
         this.shopItem = null;
         await this.$store.dispatch("getShoplist");
       }
+      return resp;
     },
     formatDate(value) {
       return moment(value).locale("hu").format("MMM Do h:m");
