@@ -4,12 +4,12 @@ const Recipe = require("../models/recipe");
 const authGroup = require("../middleware/verify-group");
 
 router.post("/recipe", auth, async (req, res) => {
+
   try {
     const recipe = new Recipe();
     recipe.name = req.body.name;
-    recipe.preparation = req.body.preparation;
     recipe.description = req.body.description;
-    recipe.ingredients = req.body.ingredients;
+    recipe.phrase = req.body.phrase
     recipe.tags = req.body.tags;
     recipe.owner = req.user._id;
     recipe.peopleamount = req.body.peopleamount;

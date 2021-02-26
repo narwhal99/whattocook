@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col lg="9" xl="6">
         <v-form ref="mainForm" @submit="submit">
-          <v-card raised class="px-4" style="background: #f8c471">
+          <v-card class="px-4">
             <v-col class="black--text">
               <h1>Recept hozzáadás</h1>
             </v-col>
@@ -18,85 +18,116 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
-              <v-divider />
-              <v-row>
-                <v-col class="black--text">
-                  <h1>Hozzávalók:</h1>
-                </v-col>
-              </v-row>
-              <v-row v-for="(data, index) in recipe.ingredients" :key="index">
-                <v-col>
-                  <v-text-field
-                    solo
-                    label="Alapanyag"
-                    v-model="data.name"
-                    @change="addNewLineIng(index)"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="2">
-                  <v-text-field
-                    solo
-                    type="number"
-                    label="Mennyiség"
-                    v-model="data.quantity"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="3">
-                  <v-select
-                    v-if="data.unit != 'Egyéb'"
-                    append-outer-icon="mdi-delete"
-                    @click:append-outer="ingredientMinusIng(index)"
-                    solo
-                    :items="foodUnit"
-                    v-model="data.unit"
-                    label="Mértékegység"
-                  ></v-select>
-                  <v-text-field
-                    label="Mértékegység"
-                    v-else
-                    solo
-                    append-outer-icon="mdi-delete"
-                    @click:append-outer="ingredientMinusIng(index)"
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
+              <template v-for="(phrase, i) in recipe.phrase">
+                <v-card :key="i" class="mb-5">
+                  <v-card-text>
+                    <v-col>
+                      <v-row v-if="recipe.phrase.length > 1">
+                        <v-col>
+                          <v-text-field
+                            append-outer-icon="mdi-delete"
+                            @click:append-outer="remove_recipephrase(i)"
+                            solo
+                            label="Fázis megnevezés"
+                            v-model="phrase.name"
+                            :rules="[(v) => !!v || 'Kérlek töltsd ki!']"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col class="black--text">
+                          <h1>Hozzávalók:</h1>
+                        </v-col>
+                      </v-row>
+                      <v-row
+                        v-for="(data, index) in phrase.ingredients"
+                        :key="index"
+                      >
+                        <v-col cols="12" lg="6">
+                          <v-text-field
+                            solo
+                            label="Alapanyag"
+                            v-model="data.name"
+                            @change="addNewLineIng(index, i)"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="3">
+                          <v-text-field
+                            solo
+                            type="number"
+                            label="Mennyiség"
+                            v-model="data.quantity"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="3">
+                          <v-select
+                            v-if="data.unit != 'Egyéb'"
+                            append-outer-icon="mdi-delete"
+                            @click:append-outer="ingredientMinusIng(index, i)"
+                            solo
+                            :items="foodUnit"
+                            v-model="data.unit"
+                            label="Mértékegység"
+                          ></v-select>
+                          <v-text-field
+                            label="Mértékegység"
+                            v-else
+                            solo
+                            append-outer-icon="mdi-delete"
+                            @click:append-outer="ingredientMinusIng(index)"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row justify="end">
+                        <v-btn text @click="ingredientPlus(i)"
+                          >Hozzávaló hozzáadása
+                          <v-icon dark right>add_box</v-icon></v-btn
+                        >
+                      </v-row>
 
-              <v-row justify="end">
-                <v-btn text @click="ingredientPlus"
-                  >Hozzávaló hozzáadása
-                  <v-icon dark right>add_box</v-icon></v-btn
-                >
-              </v-row>
-              <v-divider />
+                      <v-col>
+                        <v-divider />
+                      </v-col>
+                      <v-row>
+                        <v-col class="black--text">
+                          <h1>Lépések:</h1>
+                        </v-col>
+                      </v-row>
+                      <v-row
+                        v-for="(data, index) in phrase.preparation"
+                        :key="'A' + index"
+                      >
+                        <v-col>
+                          <v-text-field
+                            :prefix="index + 1 + '.'"
+                            solo
+                            label="Leírás"
+                            v-model="data.value"
+                            :key="index"
+                            append-outer-icon="mdi-delete"
+                            @click:append-outer="ingredientMinusPrep(index, i)"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row justify="end">
+                        <v-btn text @click="ingredientPlusPrep(i)"
+                          >További lépés hozzáadása
+                          <v-icon dark right>add_box</v-icon></v-btn
+                        >
+                      </v-row>
+                    </v-col>
+                  </v-card-text>
+                </v-card>
+              </template>
               <v-row>
-                <v-col class="black--text">
-                  <h1>Étel elkészítése:</h1>
+                <v-col align="center">
+                  <v-btn outlined width="100%" @click="add_recipePhrase">
+                    Fázis hozzáadás
+                    <v-icon dark right>add_box</v-icon>
+                  </v-btn>
                 </v-col>
               </v-row>
-              <v-row
-                v-for="(data, index) in this.recipe.preparation"
-                :key="'A' + index"
-              >
-                <v-col>
-                  <v-text-field
-                    :prefix="index + 1 + '.'"
-                    solo
-                    label="Leírás"
-                    v-model="data.value"
-                    :key="index"
-                    append-outer-icon="mdi-delete"
-                    @click:append-outer="ingredientMinusPrep(index)"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row justify="end">
-                <v-btn text @click="ingredientPlusPrep"
-                  >További lépés hozzáadása
-                  <v-icon dark right>add_box</v-icon></v-btn
-                >
-              </v-row>
-              <v-divider />
               <v-row justify="start">
                 <v-col class="black--text">
                   <h1>Leírás:</h1>
@@ -202,15 +233,20 @@ export default {
       ],
       recipe: {
         name: "",
-        ingredients: [
+        phrase: [
           {
-            name: "",
-            quantity: null,
-            unit: "",
+            name: null,
+            ingredients: [
+              {
+                name: null,
+                quantity: null,
+                unit: null,
+              },
+            ],
+            preparation: [{ value: "" }],
           },
         ],
         description: "",
-        preparation: [{ value: "" }],
         tags: [],
         peopleamount: null,
       },
@@ -263,20 +299,36 @@ export default {
     };
   },
   methods: {
+    remove_recipephrase(index) {
+      this.recipe.phrase.splice(index, 1);
+    },
+    add_recipePhrase() {
+      this.recipe.phrase.push({
+        name: null,
+        ingredients: [
+          {
+            name: null,
+            quantity: null,
+            unit: null,
+          },
+        ],
+        preparation: [{ value: "" }],
+      });
+    },
     async submit(e) {
       e.preventDefault();
       if (this.$refs.mainForm.validate()) {
         try {
-          for (let i = 0; i < this.recipe.ingredients.length; i++) {
-            if (this.recipe.ingredients[i].name === "") {
-              this.recipe.ingredients.splice(i, 1);
-            }
-          }
+          //for (let i = 0; i < this.recipe.ingredients.length; i++) {
+          //  if (this.recipe.ingredients[i].name === "") {
+          //    this.recipe.ingredients.splice(i, 1);
+          //  }
+          // }
           const resp = await this.$store.dispatch("addRecipe", this.recipe);
           if (resp.status === 201) {
             this.snackbar = true;
             this.snackbarText = "Sikeressen hozzáadatad a receptet!";
-            this.$refs.mainForm.reset();
+            //this.$refs.mainForm.reset();
           } else {
             console.log(resp);
           }
@@ -285,33 +337,33 @@ export default {
         }
       }
     },
-    ingredientPlusPrep() {
-      this.recipe.preparation.push({ value: "" });
+    ingredientPlusPrep(i) {
+      this.recipe.phrase[i].preparation.push({ value: "" });
     },
-    ingredientPlus() {
-      this.recipe.ingredients.push({
+    ingredientPlus(i) {
+      this.recipe.phrase[i].ingredients.push({
         name: "",
-        quantity: 0,
+        quantity: null,
         unit: "",
       });
     },
-    ingredientMinusPrep(index) {
-      if (this.recipe.preparation.length < 2) {
+    ingredientMinusPrep(index, i) {
+      if (this.recipe.phrase[i].preparation.length < 2) {
         return;
       } else {
-        this.recipe.preparation.splice(index, 1);
+        this.recipe.phrase[i].preparation.splice(index, 1);
       }
     },
-    ingredientMinusIng(index) {
-      if (this.recipe.ingredients.length < 2) {
+    ingredientMinusIng(index, i) {
+      if (this.recipe.phrase[i].ingredients.length < 2) {
         return;
       } else {
-        this.recipe.ingredients.splice(index, 1);
+        this.recipe.phrase[i].ingredients.splice(index, 1);
       }
     },
-    addNewLineIng(index) {
-      if (index + 1 === this.recipe.ingredients.length) {
-        this.ingredientPlus();
+    addNewLineIng(index, i) {
+      if (index + 1 === this.recipe.phrase[i].ingredients.length) {
+        this.ingredientPlus(i);
       }
     },
     // addNewLinePrep(index) {

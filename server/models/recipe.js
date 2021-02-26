@@ -6,30 +6,36 @@ const RecipeSchema = new Schema({
     type: String,
     required: true,
   },
-  ingredients: [
-    {
-      name: {
-        type: String,
-        trim: true,
-      },
-      quantity: {
-        type: Number,
-      },
-      unit: {
-        type: String,
-      },
-    },
-  ],
   peopleamount: {
     type: Number
   },
-  preparation: [
+  phrase: [
     {
-      value: {
-        type: String,
-      }
-    },
-  ],
+      name: {
+        type: String
+      },
+      ingredients: [
+        {
+          name: {
+            type: String,
+            trim: true,
+          },
+          quantity: {
+            type: Number,
+          },
+          unit: {
+            type: String,
+          },
+        },
+      ],
+      preparation: [
+        {
+          value: {
+            type: String,
+          }
+        },
+      ],
+    }],
   description: {
     type: String,
   },
