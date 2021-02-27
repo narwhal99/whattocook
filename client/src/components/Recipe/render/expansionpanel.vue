@@ -27,13 +27,13 @@
                       <v-col><h3>Elkészítése</h3> </v-col>
                     </v-row>
                     <template v-for="(phrase, index) in recipe.phrase">
-                      <v-list color="#F2F4F4" align="left" :key="index">
+                      <v-list color="#F2F4F4" align="left" :key="index"  v-if="phrase.preparation.length > 0">
                         <v-subheader v-if="phrase.name">{{
                           phrase.name
                         }}</v-subheader>
                         <v-list-item-group>
                           <template v-for="(prep, i) in phrase.preparation">
-                            <v-list-item :key="i">
+                            <v-list-item :key="i" >
                               <v-list-item-content style="color: black">
                                 <v-row no-gutters>
                                   <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
