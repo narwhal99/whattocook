@@ -3,19 +3,19 @@
     <v-col cols="11" md="3" align="center">
       <v-card dark>
         <v-card-title>
-          <v-row justify="center" align="center"> Registration </v-row>
+          <v-row justify="center" align="center"> Regisztráció </v-row>
         </v-card-title>
         <v-form ref="regForm" @submit.prevent="regSubmit">
           <v-card-text>
             <v-text-field
               solo
-              label="Full name"
+              label="Teljes név"
               v-model="fullName"
             ></v-text-field>
-            <v-text-field solo label="Username" v-model="username"></v-text-field>
+            <v-text-field solo label="Felhasználónév" v-model="username"></v-text-field>
             <v-text-field
               solo
-              label="Password"
+              label="Jelszó"
               v-model="password"
               type="password"
             ></v-text-field>
@@ -23,7 +23,7 @@
           </v-card-text>
           <v-card-actions>
             <v-row justify="center" align="center">
-              <v-btn type="submit">Submit</v-btn>
+              <v-btn type="submit">Regisztráció</v-btn>
             </v-row>
           </v-card-actions>
         </v-form>

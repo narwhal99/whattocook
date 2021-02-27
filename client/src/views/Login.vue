@@ -4,27 +4,27 @@
       <v-card dark>
         <v-card-title>
           <v-row justify="center" align="center">
-            Login
+            Bejelentkezés
           </v-row>
         </v-card-title>
         <v-form ref="loginForm" @submit.prevent="loginSubmit">
           <v-card-text>
-            <v-text-field solo label="Username" v-model="username"></v-text-field>
+            <v-text-field solo label="Felhasználónév" v-model="username"></v-text-field>
             <v-text-field
               solo
-              label="Password"
+              label="Jelszó"
               v-model="password"
               type="password"
             ></v-text-field>
             <p v-if="errorMsg" class="red--text">{{ errorMsg }}</p>
             <v-col jusitfy="center" align="center">
-              <p>You dont have a user? Create..</p>
-              <v-btn to="/registration">Registration</v-btn>
+              <p>Még nem regisztráltál? Regisztrálj...</p>
+              <v-btn to="/registration">Regisztráció</v-btn>
             </v-col>
           </v-card-text>
           <v-card-actions>
             <v-row justify="center" align="center">
-              <v-btn type="submit">Submit</v-btn>
+              <v-btn type="submit">Bejelentkezés</v-btn>
             </v-row>
           </v-card-actions>
         </v-form>

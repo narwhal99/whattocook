@@ -114,7 +114,13 @@
           <v-divider />
           <v-col>
             <v-row>
-              <v-btn outlined x-small @click="editRecipe"> Edit</v-btn>
+              <v-btn
+                outlined
+                x-small
+                @click="editRecipe"
+                v-if="user.profile._id == myRecipe.owner"
+                >Szerkesztés</v-btn
+              >
               <v-spacer />
               <template v-for="(tags, i) in myRecipe.tags">
                 <v-btn outlined x-small :key="i" class="mr-1" color="grey">{{
@@ -566,7 +572,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["myRecipe"]),
+    ...mapGetters(["myRecipe", "user"]),
   },
 };
 </script>
