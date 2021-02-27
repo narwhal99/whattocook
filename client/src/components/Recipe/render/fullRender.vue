@@ -20,7 +20,12 @@
                   <h3>Elkészítése</h3>
                 </v-col>
                 <template v-for="(phrase, i) in myRecipe.phrase">
-                  <v-list color="#F2F4F4" align="left" :key="i">
+                  <v-list
+                    color="#F2F4F4"
+                    align="left"
+                    :key="i"
+                    v-if="phrase.preparation.length > 0"
+                  >
                     <v-subheader v-if="phrase.name">
                       {{ phrase.name }}</v-subheader
                     >
