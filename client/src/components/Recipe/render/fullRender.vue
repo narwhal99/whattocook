@@ -171,11 +171,11 @@
 
                   <v-card class="mt-5">
                     <v-col>
-                      <v-col>
-                        <h1>Fázisok</h1>
-                      </v-col>
                       <template v-for="(phrase, index) in editingRecipe.phrase">
-                        <v-row :key="index + 'one'">
+                        <v-row
+                          :key="index + 'one'"
+                          v-if="editingRecipe.phrase.length > 1"
+                        >
                           <v-col>
                             <h1>{{ index + 1 }}. Fázis</h1>
                           </v-col>
@@ -190,13 +190,17 @@
                             Fázis törlése
                           </v-btn>
                         </v-row>
-                        <v-divider :key="index + 'two'"></v-divider>
+
                         <v-row :key="index + 'three'">
                           <v-col cols="12" md="6">
                             <v-card class="mb-4">
                               <v-list>
                                 <v-col cols="12">
-                                  <v-row justify="center" align="center">
+                                  <v-row
+                                    justify="center"
+                                    align="center"
+                                    v-if="phrase.length > 1"
+                                  >
                                     <v-col cols="6">
                                       <v-text-field
                                         outlined
