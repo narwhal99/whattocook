@@ -10,7 +10,7 @@
           <v-card-title>Settings</v-card-title>
           <v-card-text>
             <v-text-field label="Name" v-model="euser.fullName"></v-text-field>
-            <v-text-field label="Email" v-model="euser.email"></v-text-field>
+            <v-text-field label="Username" v-model="euser.username"></v-text-field>
             <v-text-field
               type="password"
               label="Current Password"
@@ -39,7 +39,7 @@ export default {
     return {
       euser: {
         fullName: null,
-        email: null,
+        username: null,
         password: null,
         cpwd: null,
       },
@@ -70,7 +70,7 @@ export default {
   created() {
     this.euser = {
       fullName: this.user.profile.fullName,
-      email: this.user.profile.email,
+      username: this.user.profile.username,
     };
   },
 };

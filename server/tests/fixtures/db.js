@@ -7,7 +7,7 @@ const Recipe = require("../../models/recipe");
 //User withhout group
 const userOne = {
   fullName: "Without Group",
-  email: "withoutgroup@example.com",
+  username: "withoutgroup@example.com",
   password: "password321",
 };
 
@@ -20,7 +20,7 @@ const groupOne = {
 const userTwo = {
   _id: new mongoose.Types.ObjectId(),
   fullName: "With Group",
-  email: "withgroup@example.com",
+  username: "withgroup@example.com",
   password: "password321",
 };
 
@@ -28,7 +28,7 @@ const userTwo = {
 const userThree = {
   _id: new mongoose.Types.ObjectId(),
   fullName: "Group with two",
-  email: "groupwithtwo@example.com",
+  username: "groupwithtwo@example.com",
   password: "password321",
 };
 
@@ -56,17 +56,17 @@ const recipeTwo = {
 
 
 const userOneToken = async () => {
-  const user = await User.findOne({ email: userOne.email });
+  const user = await User.findOne({ username: userOne.username });
   const token = jwt.sign(user.toJSON(), process.env.TOKENKEY);
   return token;
 };
 const userTwoToken = async () => {
-  const user = await User.findOne({ email: userTwo.email });
+  const user = await User.findOne({ username: userTwo.username });
   const token = jwt.sign(user.toJSON(), process.env.TOKENKEY);
   return token;
 };
 const userThreeToken = async () => {
-  const user = await User.findOne({ email: userThree.email });
+  const user = await User.findOne({ username: userThree.username });
   const token = jwt.sign(user.toJSON(), process.env.TOKENKEY);
   return token;
 };

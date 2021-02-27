@@ -12,7 +12,7 @@
               label="Full name"
               v-model="fullName"
             ></v-text-field>
-            <v-text-field solo label="Email" v-model="email"></v-text-field>
+            <v-text-field solo label="Username" v-model="username"></v-text-field>
             <v-text-field
               solo
               label="Password"
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       fullName: null,
-      email: null,
+      username: null,
       password: null,
     };
   },
@@ -46,7 +46,7 @@ export default {
     async regSubmit() {
       let user = {
         fullName: this.fullName,
-        email: this.email,
+        username: this.username,
         password: this.password,
       };
       try {

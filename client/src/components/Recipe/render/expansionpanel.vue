@@ -112,7 +112,7 @@
                 </v-col>
               </v-row>
               <v-divider />
-              <v-col cols="10">
+              <v-col cols="10" v-if="recipe.description.length > 0">
                 <v-card color="#CCD1D1">
                   <v-col>
                     <h3>Description:</h3>

@@ -4,15 +4,15 @@ const auth = require("../middleware/verify-token");
 const jwt = require("jsonwebtoken");
 
 router.post("/user/signup", async (req, res) => {
-  if (!req.body.email || !req.body.password) {
+  if (!req.body.username || !req.body.password) {
     res
       .status(403)
-      .json({ sucees: false, message: "Please enter your email or password" });
+      .json({ sucees: false, message: "Please enter your username or password" });
   } else {
     try {
       const user = new User();
       user.fullName = req.body.fullName;
-      user.email = req.body.email;
+      user.username = req.body.username.toLowerCase();
       user.password = req.body.password;
 
       await user.save();
@@ -28,26 +28,34 @@ router.post("/user/signup", async (req, res) => {
         message: "Succesfully created a user",
       });
     } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: err.message,
-      });
+      if (err.name === 'MongoError' && err.code === 11000) {
+        res.status(500).json({
+          success: false,
+          message: "Ez a felhasználó már foglalt",
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      }
+
     }
   }
 });
 
 router.post("/user/login", async (req, res) => {
-  if (!req.body.email || !req.body.password) {
+  if (!req.body.username || !req.body.password) {
     res
       .status(403)
-      .json({ sucees: false, message: "Please enter your email or password" });
+      .json({ sucees: false, message: "Kérlek add meg a felhasználód és a jelszód!" });
   } else {
     try {
-      let foundUser = await User.findOne({ email: req.body.email });
+      let foundUser = await User.findOne({ username: req.body.username.toLowerCase() });
       if (!foundUser) {
         res.status(403).json({
           success: false,
-          message: "Authentcation failed, User not found.",
+          message: "Sikertelen bejelentkezés!",
         });
       } else {
         if (foundUser.comparePassword(req.body.password)) {
@@ -64,7 +72,7 @@ router.post("/user/login", async (req, res) => {
         } else {
           res.status(403).json({
             success: false,
-            message: "Authentication failed, Wong Password!",
+            message: "Sikertelen bejelentkezés!",
           });
         }
       }
@@ -111,7 +119,7 @@ router.patch("/user/me", auth, async (req, res) => {
     if (req.body.cpwd && req.user.comparePassword(req.body.cpwd)) {
       await User.findByIdAndUpdate(req.user._id, {
         fullName: req.body.fullName,
-        email: req.body.email
+        username: req.body.username
       }, function (err, result) {
         if (err) {
           res.status(500).json({

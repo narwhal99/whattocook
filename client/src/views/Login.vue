@@ -9,7 +9,7 @@
         </v-card-title>
         <v-form ref="loginForm" @submit.prevent="loginSubmit">
           <v-card-text>
-            <v-text-field solo label="Email" v-model="email"></v-text-field>
+            <v-text-field solo label="Username" v-model="username"></v-text-field>
             <v-text-field
               solo
               label="Password"
@@ -38,14 +38,14 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      email: null,
+      username: null,
       password: "",
     };
   },
   methods: {
     async loginSubmit() {
       let user = {
-        email: this.email,
+        username: this.username,
         password: this.password,
       };
       try {

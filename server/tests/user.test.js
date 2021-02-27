@@ -16,7 +16,7 @@ test("Should signup a new user ", async () => {
     .post("/api/user/signup")
     .send({
       fullName: "Molnár Andrej",
-      email: "molnarandre@email.com",
+      username: "molnarandre@email.com",
       password: "secretPW31!",
     })
     .expect(201);
@@ -24,7 +24,7 @@ test("Should signup a new user ", async () => {
   expect(resp.body.user._id).not.toBe(undefined);
 
   // Assert that the database was changed correctly
-  const user = await User.findOne({ email: "molnarandre@email.com" });
+  const user = await User.findOne({ username: "molnarandre@email.com" });
   expect(user).not.toBeNull();
 
   //Password hash test
@@ -33,7 +33,7 @@ test("Should signup a new user ", async () => {
 
 test("Should login existing user", async () => {
   const resp = await request(app).post("/api/user/login").send({
-    email: userOne.email,
+    username: userOne.username,
     password: userOne.password,
   });
   expect(resp.body.success).toBe(true);
@@ -42,7 +42,7 @@ test("Should login existing user", async () => {
 
 test("Should not login with wrong pw", async () => {
   const resp = await request(app).post("/api/user/login").send({
-    email: userOne.email,
+    username: userOne.username,
     password: "thisisnotmypassword",
   });
   expect(resp.body.success).toBe(false);
