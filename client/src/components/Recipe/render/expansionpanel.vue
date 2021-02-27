@@ -26,17 +26,24 @@
                     <v-row>
                       <v-col><h3>Elkészítése</h3> </v-col>
                     </v-row>
-                    <v-list color="#F2F4F4" align="left">
-                      <v-list-item-group>
-                        <template v-for="(prep, i) in recipe.preparation">
-                          <v-list-item :key="i">
-                            <v-list-item-content style="color: black">
-                              <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
-                            </v-list-item-content>
-                          </v-list-item>
-                        </template>
-                      </v-list-item-group>
-                    </v-list>
+                    <template v-for="(phrase, index) in recipe.phrase">
+                      <v-list color="#F2F4F4" align="left" :key="index">
+                        <v-subheader v-if="phrase.name">{{
+                          phrase.name
+                        }}</v-subheader>
+                        <v-list-item-group>
+                          <template v-for="(prep, i) in phrase.preparation">
+                            <v-list-item :key="i">
+                              <v-list-item-content style="color: black">
+                                <v-list-item-title>
+                                  {{ i + 1 }}. {{ prep.value }}
+                                </v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </template>
+                        </v-list-item-group>
+                      </v-list>
+                    </template>
                   </v-card>
                 </v-col>
                 <v-col cols="12" md="3">
@@ -59,32 +66,41 @@
                         <v-icon large color="black">remove</v-icon>
                       </v-col>
                     </v-row>
-                    <v-list flat color="#F2F4F4" align="left">
-                      <v-list-item-group multiple v-model="shoplistSelected">
-                        <template v-for="(ingredient, i) in recipe.ingredients">
-                          <v-list-item :key="i" :value="ingredient">
-                            <template v-slot:default="{ active }">
-                              <v-list-item-content>
-                                <v-col class="mb-0 pa-0">
-                                  {{ ingredient.name }}</v-col
-                                >
-                                <v-list-item-subtitle>
-                                  {{
-                                    ingredient.quantity + " " + ingredient.unit
-                                  }}
-                                </v-list-item-subtitle>
-                              </v-list-item-content>
-                              <v-list-item-action>
-                                <v-checkbox
-                                  :input-value="active"
-                                  color="deep-purple accent-4"
-                                ></v-checkbox>
-                              </v-list-item-action>
-                            </template>
-                          </v-list-item>
-                        </template>
-                      </v-list-item-group>
-                    </v-list>
+                    <template v-for="(phrase, index) in recipe.phrase">
+                      <v-list flat color="#F2F4F4" align="left" :key="index">
+                        <v-subheader v-if="phrase.name">{{
+                          phrase.name
+                        }}</v-subheader>
+                        <v-list-item-group multiple v-model="shoplistSelected">
+                          <template
+                            v-for="(ingredient, i) in phrase.ingredients"
+                          >
+                            <v-list-item :key="i" :value="ingredient">
+                              <template v-slot:default="{ active }">
+                                <v-list-item-content>
+                                  <v-col class="mb-0 pa-0">
+                                    {{ ingredient.name }}</v-col
+                                  >
+                                  <v-list-item-subtitle>
+                                    {{
+                                      ingredient.quantity +
+                                      " " +
+                                      ingredient.unit
+                                    }}
+                                  </v-list-item-subtitle>
+                                </v-list-item-content>
+                                <v-list-item-action>
+                                  <v-checkbox
+                                    :input-value="active"
+                                    color="deep-purple accent-4"
+                                  ></v-checkbox>
+                                </v-list-item-action>
+                              </template>
+                            </v-list-item>
+                          </template>
+                        </v-list-item-group>
+                      </v-list>
+                    </template>
                   </v-card>
                 </v-col>
               </v-row>

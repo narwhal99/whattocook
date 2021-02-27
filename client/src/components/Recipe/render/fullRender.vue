@@ -19,17 +19,24 @@
                 <v-col>
                   <h3>Elkészítése</h3>
                 </v-col>
-                <v-list color="#F2F4F4" align="left">
-                  <v-list-item-group>
-                    <template v-for="(prep, i) in myRecipe.preparation">
-                      <v-list-item :key="i">
-                        <v-list-item-content style="color: black">
-                          <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </template>
-                  </v-list-item-group>
-                </v-list>
+                <template v-for="(phrase, i) in myRecipe.phrase">
+                  <v-list color="#F2F4F4" align="left" :key="i">
+                    <v-subheader v-if="phrase.name">
+                      {{ phrase.name }}</v-subheader
+                    >
+                    <v-list-item-group>
+                      <template v-for="(prep, index) in phrase.preparation">
+                        <v-list-item :key="index">
+                          <v-list-item-content style="color: black">
+                            <v-list-item-title>
+                              {{ index + 1 }}. {{ prep.value }}
+                            </v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-list-item-group>
+                  </v-list>
+                </template>
               </v-card>
             </v-col>
             <v-col cols="12" md="3">
@@ -50,30 +57,37 @@
                     <v-icon color="black">remove</v-icon>
                   </v-col>
                 </v-row>
-                <v-list color="#F2F4F4" align="left">
-                  <v-list-item-group multiple v-model="shoplistSelected">
-                    <template v-for="(ingredient, i) in myRecipe.ingredients">
-                      <v-list-item :key="i" :value="ingredient">
-                        <template v-slot:default="{ active }">
-                          <v-list-item-content style="color: black">
-                            <v-col class="mb-0 pa-0">
-                              {{ ingredient.name }}
-                            </v-col>
-                            <v-list-item-subtitle>
-                              {{ ingredient.quantity + " " + ingredient.unit }}
-                            </v-list-item-subtitle>
-                          </v-list-item-content>
-                          <v-list-item-action>
-                            <v-checkbox
-                              :input-value="active"
-                              color="deep-purple accent-4"
-                            ></v-checkbox>
-                          </v-list-item-action>
-                        </template>
-                      </v-list-item>
-                    </template>
-                  </v-list-item-group>
-                </v-list>
+                <template v-for="(phrase, i) in myRecipe.phrase">
+                  <v-list color="#F2F4F4" align="left" :key="i">
+                    <v-subheader v-if="phrase.name">{{
+                      phrase.name
+                    }}</v-subheader>
+                    <v-list-item-group multiple v-model="shoplistSelected">
+                      <template v-for="(ingredient, i) in phrase.ingredients">
+                        <v-list-item :key="i" :value="ingredient">
+                          <template v-slot:default="{ active }">
+                            <v-list-item-content style="color: black">
+                              <v-col class="mb-0 pa-0">
+                                {{ ingredient.name }}
+                              </v-col>
+                              <v-list-item-subtitle>
+                                {{
+                                  ingredient.quantity + " " + ingredient.unit
+                                }}
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                              <v-checkbox
+                                :input-value="active"
+                                color="deep-purple accent-4"
+                              ></v-checkbox>
+                            </v-list-item-action>
+                          </template>
+                        </v-list-item>
+                      </template>
+                    </v-list-item-group>
+                  </v-list>
+                </template>
               </v-card>
             </v-col>
           </v-row>
@@ -116,7 +130,7 @@
             v-model="editDialog"
             transition="dialog-bottom-transition"
           >
-            <v-card dark>
+            <v-card>
               <v-toolbar flat dark color="#676599" class="shrink">
                 <v-btn icon dark @click="exitEditDialog">
                   <v-icon>mdi-close</v-icon>
@@ -142,171 +156,228 @@
                 </v-menu>
               </v-toolbar>
               <v-card-text align="center" justify="center">
-                <v-row justify="center">
-                  <v-col cols="6">
-                    <v-col>
-                      <h2>Recipe name:</h2>
-                    </v-col>
-                    <v-text-field
-                      outlined
-                      filled
-                      hide-details
-                      v-model="editingRecipe.name"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-divider />
-                <v-col>
-                  <h2>Ingredients</h2>
-                </v-col>
-                <v-list>
-                  <v-col cols="12" md="7">
-                    <v-list-item-group>
-                      <template
-                        v-for="(ingredient, i) in editingRecipe.ingredients"
-                      >
-                        <v-list-item :key="i" inactive>
-                          <v-list-item-content style="color: black">
-                            <v-col cols="6">
-                              <v-textarea
-                                outlined
-                                rows="1"
-                                auto-grow
-                                v-model="ingredient.name"
-                              >
-                              </v-textarea>
-                            </v-col>
-                            <v-col cols="3">
-                              <v-text-field
-                                v-model="ingredient.quantity"
-                                outlined
-                              >
-                              </v-text-field>
-                            </v-col>
-                            <v-col cols="3">
-                              <v-select
-                                v-if="ingredient.unit != 'Egyéb'"
-                                append-outer-icon="mdi-delete"
-                                @click:append-outer="ingredientMinusIng(index)"
-                                outlined
-                                :items="foodUnit"
-                                v-model="ingredient.unit"
-                                label="Mértékegység"
-                              ></v-select>
-                              <v-text-field
-                               label="Mértékegység"
-                                v-else
-                                outlined
-                                append-outer-icon="mdi-delete"
-                                @click:append-outer="ingredientMinusIng(index)"
-                              >
-                              </v-text-field>
-                            </v-col>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                    </v-list-item-group>
-                  </v-col>
-                  <v-row justify="end">
-                    <v-btn text @click="ingredientPlus"
-                      >Hozzávaló hozzáadása
-                      <v-icon dark right>add_box</v-icon></v-btn
-                    >
-                  </v-row>
-                </v-list>
-                <v-divider></v-divider>
-                <v-col>
-                  <h2>Preparation</h2>
-                </v-col>
-                <v-list>
-                  <v-col cols="12" md="6">
-                    <v-list-item-group>
-                      <template v-for="(prep, i) in editingRecipe.preparation">
-                        <v-list-item :key="i" inactive>
-                          <v-list-item-content style="color: black">
-                            <v-textarea
-                              outlined
-                              :prefix="i + 1 + '.'"
-                              append-outer-icon="mdi-delete"
-                              @click:append-outer="ingredientMinusPrep(i)"
-                              rows="1"
-                              auto-grow
-                              v-model="prep.value"
-                            ></v-textarea>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                    </v-list-item-group>
-                  </v-col>
-                  <v-row justify="end">
-                    <v-btn text @click="ingredientPlusPrep"
-                      >További lépés hozzáadása
-                      <v-icon dark right>add_box</v-icon></v-btn
-                    >
-                  </v-row>
-                </v-list>
-                <v-divider />
-                <v-list>
-                  <!-- description -->
+                <v-col cols="12" md="12">
                   <v-row justify="center">
                     <v-col cols="6">
-                      <v-textarea
+                      <v-text-field
+                        label="Recept neve"
                         outlined
-                        rows="2"
-                        auto-grow
-                        label="Leírás"
-                        v-model="editingRecipe.description"
-                      ></v-textarea>
+                        filled
+                        hide-details
+                        v-model="editingRecipe.name"
+                      ></v-text-field>
                     </v-col>
                   </v-row>
-                </v-list>
-                <v-row justify="center">
-                  <v-col>
-                    <h2>Jellemzők:</h2>
-                  </v-col>
-                </v-row>
-                <v-row justify="center">
-                  <v-col cols="6">
-                    <v-combobox
-                      v-model="editingRecipe.tags"
-                      outlined
-                      :search-input.sync="tagSearch"
-                      hide-selected
-                      label="Válassz ki jellemzőket a recepthez"
-                      multiple
-                      persistent-hint
-                      small-chips
-                    >
-                      <template v-slot:no-data>
-                        <v-list-item>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              Nyomj <kbd>enter</kbd>-t hozzáadáshoz: "<strong>{{
-                                tagSearch
-                              }}</strong
-                              >"
-                            </v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
+
+                  <v-card class="mt-5">
+                    <v-col>
+                      <v-col>
+                        <h1>Ingredients</h1>
+                      </v-col>
+                      <template v-for="(phrase, index) in editingRecipe.phrase">
+                        <v-card :key="index" class="mb-4">
+                          <v-list>
+                            <v-col cols="12">
+                              <v-row justify="center" align="center">
+                                <v-col cols="6">
+                                  <v-text-field
+                                    outlined
+                                    filled
+                                    label="Fázis név"
+                                    v-model="phrase.name"
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
+
+                              <template
+                                v-for="(ingredient, i) in phrase.ingredients"
+                              >
+                                <v-list-item inactive :key="i">
+                                  <v-list-item-content style="color: black">
+                                    <v-col cols="12" md="4">
+                                      <v-textarea
+                                        label="Alapanyag"
+                                        filled
+                                        outlined
+                                        rows="1"
+                                        auto-grow
+                                        v-model="ingredient.name"
+                                      >
+                                      </v-textarea>
+                                    </v-col>
+                                    <v-col cols="12" md="4">
+                                      <v-text-field
+                                        label="Mennyiség"
+                                        filled
+                                        v-model="ingredient.quantity"
+                                        outlined
+                                      >
+                                      </v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="4">
+                                      <v-select
+                                        v-if="ingredient.unit != 'Egyéb'"
+                                        append-outer-icon="mdi-delete"
+                                        @click:append-outer="
+                                          ingredientMinusIng(index, i)
+                                        "
+                                        outlined
+                                        :items="foodUnit"
+                                        v-model="ingredient.unit"
+                                        label="Mértékegység"
+                                        filled
+                                      ></v-select>
+                                      <v-text-field
+                                        label="Mértékegység"
+                                        v-else
+                                        outlined
+                                        append-outer-icon="mdi-delete"
+                                        @click:append-outer="
+                                          ingredientMinusIng(index, i)
+                                        "
+                                      >
+                                      </v-text-field>
+                                    </v-col>
+                                  </v-list-item-content>
+                                </v-list-item>
+                              </template>
+                            </v-col>
+                            <v-col>
+                              <v-row justify="end">
+                                <v-btn text @click="ingredientPlus(index)"
+                                  >Hozzávaló hozzáadása
+                                  <v-icon dark right>add_box</v-icon></v-btn
+                                >
+                              </v-row>
+                            </v-col>
+                          </v-list>
+                        </v-card>
                       </template>
-                    </v-combobox>
-                  </v-col>
-                  <v-col cols="6" md="3">
-                    <v-select
-                      v-model="editingRecipe.peopleamount"
-                      :items="peopleamount"
-                      item-text="text"
-                      item-value="value"
-                      outlined
-                      label="Hány főre?"
-                    ></v-select>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col class="grey--text darken-3"
-                    >Hozzáadva: {{ formatDate(editingRecipe.addedTime) }}</v-col
-                  >
-                </v-row>
+                    </v-col>
+                  </v-card>
+                  <v-card class="mt-5">
+                    <v-col>
+                      <v-col>
+                        <h1>Preparation</h1>
+                      </v-col>
+                      <template v-for="(phrase, index) in editingRecipe.phrase">
+                        <v-card :key="index" class="mb-4">
+                          <v-list>
+                            <v-row justify="center" align="center">
+                              <v-col cols="6">
+                                <v-text-field
+                                  outlined
+                                  filled
+                                  label="Fázis név"
+                                  v-model="phrase.name"
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            <v-col cols="12" md="6">
+                              <template v-for="(prep, i) in phrase.preparation">
+                                <v-list-item :key="i" inactive>
+                                  <v-list-item-content style="color: black">
+                                    <v-textarea
+                                      filled
+                                      outlined
+                                      :prefix="i + 1 + '.'"
+                                      append-outer-icon="mdi-delete"
+                                      @click:append-outer="
+                                        ingredientMinusPrep(i, index)
+                                      "
+                                      rows="1"
+                                      auto-grow
+                                      v-model="prep.value"
+                                    ></v-textarea>
+                                  </v-list-item-content>
+                                </v-list-item>
+                              </template>
+                            </v-col>
+                            <v-col>
+                              <v-row justify="end">
+                                <v-btn text @click="ingredientPlusPrep(index)"
+                                  >További lépés hozzáadása
+                                  <v-icon dark right>add_box</v-icon></v-btn
+                                >
+                              </v-row>
+                            </v-col>
+                          </v-list>
+                        </v-card>
+                      </template>
+                    </v-col>
+                    <v-row>
+                      <v-col>
+                        <v-btn outlined width="90%" @click="add_recipePhrase">
+                          Fázis hozzáadása</v-btn
+                        >
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-divider />
+                  <v-card class="mt-5">
+                    <v-list>
+                      <!-- description -->
+
+                      <v-row justify="center">
+                        <v-col cols="6">
+                          <v-textarea
+                            filled
+                            outlined
+                            rows="2"
+                            auto-grow
+                            label="Leírás"
+                            v-model="editingRecipe.description"
+                          ></v-textarea>
+                        </v-col>
+                      </v-row>
+                    </v-list>
+
+                    <v-row justify="center">
+                      <v-col cols="6">
+                        <v-combobox
+                          filled
+                          v-model="editingRecipe.tags"
+                          outlined
+                          :search-input.sync="tagSearch"
+                          hide-selected
+                          label="Válassz ki jellemzőket a recepthez"
+                          multiple
+                          persistent-hint
+                          small-chips
+                        >
+                          <template v-slot:no-data>
+                            <v-list-item>
+                              <v-list-item-content>
+                                <v-list-item-title>
+                                  Nyomj <kbd>enter</kbd>-t hozzáadáshoz:
+                                  "<strong>{{ tagSearch }}</strong
+                                  >"
+                                </v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </template>
+                        </v-combobox>
+                      </v-col>
+                      <v-col cols="6" md="3">
+                        <v-select
+                          filled
+                          v-model="editingRecipe.peopleamount"
+                          :items="peopleamount"
+                          item-text="text"
+                          item-value="value"
+                          outlined
+                          label="Hány főre?"
+                        ></v-select>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="grey--text darken-3"
+                        >Hozzáadva:
+                        {{ formatDate(editingRecipe.addedTime) }}</v-col
+                      >
+                    </v-row>
+                  </v-card>
+                </v-col>
               </v-card-text>
             </v-card>
           </v-dialog>
@@ -390,6 +461,19 @@ export default {
     };
   },
   methods: {
+    add_recipePhrase() {
+      this.editingRecipe.phrase.push({
+        name: null,
+        ingredients: [
+          {
+            name: null,
+            quantity: null,
+            unit: null,
+          },
+        ],
+        preparation: [{ value: "" }],
+      });
+    },
     async submitToShoplist() {
       this.shoplistSelected.forEach(async (item) => {
         const itemName = item.name + " " + item.quantity + " " + item.unit;
@@ -418,28 +502,28 @@ export default {
         this.$router.go();
       }
     },
-    ingredientPlusPrep() {
-      this.editingRecipe.preparation.push({ value: "" });
+    ingredientPlusPrep(index) {
+      this.editingRecipe.phrase[index].preparation.push({ value: null });
     },
-    ingredientPlus() {
-      this.editingRecipe.ingredients.push({
-        name: "",
-        quantity: 0,
-        unit: "",
+    ingredientPlus(index) {
+      this.editingRecipe.phrase[index].ingredients.push({
+        name: null,
+        quantity: null,
+        unit: null,
       });
     },
-    ingredientMinusPrep(index) {
-      if (this.editingRecipe.preparation.length < 2) {
+    ingredientMinusPrep(index, i) {
+      if (this.editingRecipe.phrase[i].preparation.length < 2) {
         return;
       } else {
-        this.editingRecipe.preparation.splice(index, 1);
+        this.editingRecipe.phrase[i].preparation.splice(index, 1);
       }
     },
-    ingredientMinusIng(index) {
-      if (this.editingRecipe.ingredients.length < 2) {
+    ingredientMinusIng(index, i) {
+      if (this.editingRecipe.phrase[index].ingredients.length < 2) {
         return;
       } else {
-        this.editingRecipe.ingredients.splice(index, 1);
+        this.editingRecipe.phrase[index].ingredients.splice(i, 1);
       }
     },
     exitEditDialog() {
