@@ -34,7 +34,7 @@
                         <v-list-item :key="index">
                           <v-list-item-content style="color: black">
                             <v-row no-gutters>
-                              <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
+                              <v-col> {{ index + 1 }}. {{ prep.value }} </v-col>
                             </v-row>
                           </v-list-item-content>
                         </v-list-item>
@@ -184,7 +184,7 @@
                     <v-col>
                       <template v-for="(phrase, index) in editingRecipe.phrase">
                         <v-col :key="index + 'one'">
-                          <v-row v-if="editingRecipe.phrase.length > 1" >
+                          <v-row v-if="editingRecipe.phrase.length > 1">
                             <v-col>
                               <h1>{{ index + 1 }}. Fázis</h1>
                             </v-col>
