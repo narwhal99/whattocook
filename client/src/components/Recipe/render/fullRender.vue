@@ -28,9 +28,9 @@
                       <template v-for="(prep, index) in phrase.preparation">
                         <v-list-item :key="index">
                           <v-list-item-content style="color: black">
-                            <v-list-item-title>
-                              {{ index + 1 }}. {{ prep.value }}
-                            </v-list-item-title>
+                            <v-row no-gutters>
+                              <v-col> {{ i + 1 }}. {{ prep.value }} </v-col>
+                            </v-row>
                           </v-list-item-content>
                         </v-list-item>
                       </template>
