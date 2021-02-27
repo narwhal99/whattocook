@@ -347,18 +347,10 @@ export default {
       });
     },
     ingredientMinusPrep(index, i) {
-      if (this.recipe.phrase[i].preparation.length < 2) {
-        return;
-      } else {
-        this.recipe.phrase[i].preparation.splice(index, 1);
-      }
+      this.recipe.phrase[i].preparation.splice(index, 1);
     },
     ingredientMinusIng(index, i) {
-      if (this.recipe.phrase[i].ingredients.length < 2) {
-        return;
-      } else {
-        this.recipe.phrase[i].ingredients.splice(index, 1);
-      }
+      this.recipe.phrase[i].ingredients.splice(index, 1);
     },
     addNewLineIng(index, i) {
       if (index + 1 === this.recipe.phrase[i].ingredients.length) {

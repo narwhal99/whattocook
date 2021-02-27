@@ -546,18 +546,10 @@ export default {
       });
     },
     ingredientMinusPrep(index, i) {
-      if (this.editingRecipe.phrase[i].preparation.length < 2) {
-        return;
-      } else {
-        this.editingRecipe.phrase[i].preparation.splice(index, 1);
-      }
+      this.editingRecipe.phrase[i].preparation.splice(index, 1);
     },
     ingredientMinusIng(index, i) {
-      if (this.editingRecipe.phrase[index].ingredients.length < 2) {
-        return;
-      } else {
-        this.editingRecipe.phrase[index].ingredients.splice(i, 1);
-      }
+      this.editingRecipe.phrase[index].ingredients.splice(i, 1);
     },
     exitEditDialog() {
       this.editDialog = false;
