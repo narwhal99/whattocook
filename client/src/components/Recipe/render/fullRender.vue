@@ -183,25 +183,33 @@
                   <v-card class="mt-5">
                     <v-col>
                       <template v-for="(phrase, index) in editingRecipe.phrase">
-                        <v-row
-                          :key="index + 'one'"
-                          v-if="editingRecipe.phrase.length > 1"
-                        >
-                          <v-col>
-                            <h1>{{ index + 1 }}. Fázis</h1>
-                          </v-col>
+                        <v-col :key="index + 'one'">
+                          <v-row v-if="editingRecipe.phrase.length > 1" >
+                            <v-col>
+                              <h1>{{ index + 1 }}. Fázis</h1>
+                            </v-col>
 
-                          <v-btn
-                            right
-                            absolute
-                            text
-                            color="error"
-                            @click="remove_recipephrase(index)"
-                          >
-                            Fázis törlése
-                          </v-btn>
-                        </v-row>
-
+                            <v-btn
+                              right
+                              absolute
+                              text
+                              color="error"
+                              @click="remove_recipephrase(index)"
+                            >
+                              Fázis törlése
+                            </v-btn>
+                          </v-row>
+                          <v-row :key="index + 'two'" justify="center">
+                            <v-col cols="4">
+                              <v-text-field
+                                outlined
+                                filled
+                                label="Fázis név"
+                                v-model="phrase.name"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-col>
                         <v-row :key="index + 'three'">
                           <v-col cols="12" md="6">
                             <v-card class="mb-4">
