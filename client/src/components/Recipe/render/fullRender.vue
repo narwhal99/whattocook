@@ -172,212 +172,232 @@
                   <v-card class="mt-5">
                     <v-col>
                       <v-col>
-                        <h1>Ingredients</h1>
+                        <h1>Fázisok</h1>
                       </v-col>
                       <template v-for="(phrase, index) in editingRecipe.phrase">
-                        <v-card :key="index" class="mb-4">
-                          <v-list>
-                            <v-col cols="12">
-                              <v-row justify="center" align="center">
-                                <v-col cols="6">
-                                  <v-text-field
-                                    outlined
-                                    filled
-                                    label="Fázis név"
-                                    v-model="phrase.name"
-                                  ></v-text-field>
-                                </v-col>
-                              </v-row>
+                        <v-row :key="index + 'one'">
+                          <v-col>
+                            <h1>{{ index + 1 }}. Fázis</h1>
+                          </v-col>
 
-                              <template
-                                v-for="(ingredient, i) in phrase.ingredients"
-                              >
-                                <v-list-item inactive :key="i">
-                                  <v-list-item-content style="color: black">
-                                    <v-col cols="12" md="4">
+                          <v-btn
+                            right
+                            absolute
+                            text
+                            color="error"
+                            @click="remove_recipephrase(index)"
+                          >
+                            Fázis törlése
+                          </v-btn>
+                        </v-row>
+                        <v-divider :key="index + 'two'"></v-divider>
+                        <v-row :key="index + 'three'">
+                          <v-col cols="12" md="6">
+                            <v-card class="mb-4">
+                              <v-list>
+                                <v-col cols="12">
+                                  <v-row justify="center" align="center">
+                                    <v-col cols="6">
+                                      <v-text-field
+                                        outlined
+                                        filled
+                                        label="Fázis név"
+                                        v-model="phrase.name"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-col>
+                                      <h1>Hozzávalók</h1>
+                                    </v-col>
+                                  </v-row>
+                                  <template
+                                    v-for="(
+                                      ingredient, i
+                                    ) in phrase.ingredients"
+                                  >
+                                    <v-list-item inactive :key="i">
+                                      <v-list-item-content style="color: black">
+                                        <v-col cols="12" sm="4">
+                                          <v-textarea
+                                            label="Alapanyag"
+                                            filled
+                                            outlined
+                                            rows="1"
+                                            auto-grow
+                                            v-model="ingredient.name"
+                                          >
+                                          </v-textarea>
+                                        </v-col>
+                                        <v-col cols="12" sm="4">
+                                          <v-text-field
+                                            label="Mennyiség"
+                                            filled
+                                            v-model="ingredient.quantity"
+                                            outlined
+                                          >
+                                          </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="4">
+                                          <v-select
+                                            v-if="ingredient.unit != 'Egyéb'"
+                                            append-outer-icon="mdi-delete"
+                                            @click:append-outer="
+                                              ingredientMinusIng(index, i)
+                                            "
+                                            outlined
+                                            :items="foodUnit"
+                                            v-model="ingredient.unit"
+                                            label="Mértékegység"
+                                            filled
+                                          ></v-select>
+                                          <v-text-field
+                                            label="Mértékegység"
+                                            v-else
+                                            outlined
+                                            append-outer-icon="mdi-delete"
+                                            @click:append-outer="
+                                              ingredientMinusIng(index, i)
+                                            "
+                                          >
+                                          </v-text-field>
+                                        </v-col>
+                                      </v-list-item-content>
+                                    </v-list-item>
+                                  </template>
+                                </v-col>
+                                <v-col>
+                                  <v-row justify="end">
+                                    <v-btn text @click="ingredientPlus(index)"
+                                      >Hozzávaló hozzáadása
+                                      <v-icon dark right>add_box</v-icon></v-btn
+                                    >
+                                  </v-row>
+                                </v-col>
+                              </v-list>
+                            </v-card>
+                          </v-col>
+
+                          <v-col cols="12" md="6">
+                            <v-card>
+                              <v-col cols="12">
+                                <v-row>
+                                  <v-col>
+                                    <h1>Elkészítése</h1>
+                                  </v-col>
+                                </v-row>
+                                <template
+                                  v-for="(prep, i) in phrase.preparation"
+                                >
+                                  <v-list-item :key="i" inactive>
+                                    <v-list-item-content style="color: black">
                                       <v-textarea
-                                        label="Alapanyag"
                                         filled
                                         outlined
+                                        :prefix="i + 1 + '.'"
+                                        append-outer-icon="mdi-delete"
+                                        @click:append-outer="
+                                          ingredientMinusPrep(i, index)
+                                        "
                                         rows="1"
                                         auto-grow
-                                        v-model="ingredient.name"
-                                      >
-                                      </v-textarea>
-                                    </v-col>
-                                    <v-col cols="12" md="4">
-                                      <v-text-field
-                                        label="Mennyiség"
-                                        filled
-                                        v-model="ingredient.quantity"
-                                        outlined
-                                      >
-                                      </v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="4">
-                                      <v-select
-                                        v-if="ingredient.unit != 'Egyéb'"
-                                        append-outer-icon="mdi-delete"
-                                        @click:append-outer="
-                                          ingredientMinusIng(index, i)
-                                        "
-                                        outlined
-                                        :items="foodUnit"
-                                        v-model="ingredient.unit"
-                                        label="Mértékegység"
-                                        filled
-                                      ></v-select>
-                                      <v-text-field
-                                        label="Mértékegység"
-                                        v-else
-                                        outlined
-                                        append-outer-icon="mdi-delete"
-                                        @click:append-outer="
-                                          ingredientMinusIng(index, i)
-                                        "
-                                      >
-                                      </v-text-field>
-                                    </v-col>
-                                  </v-list-item-content>
-                                </v-list-item>
-                              </template>
-                            </v-col>
-                            <v-col>
-                              <v-row justify="end">
-                                <v-btn text @click="ingredientPlus(index)"
-                                  >Hozzávaló hozzáadása
-                                  <v-icon dark right>add_box</v-icon></v-btn
-                                >
-                              </v-row>
-                            </v-col>
-                          </v-list>
-                        </v-card>
-                      </template>
-                    </v-col>
-                  </v-card>
-                  <v-card class="mt-5">
-                    <v-col>
-                      <v-col>
-                        <h1>Preparation</h1>
-                      </v-col>
-                      <template v-for="(phrase, index) in editingRecipe.phrase">
-                        <v-card :key="index" class="mb-4">
-                          <v-list>
-                            <v-row justify="center" align="center">
-                              <v-col cols="6">
-                                <v-text-field
-                                  outlined
-                                  filled
-                                  label="Fázis név"
-                                  v-model="phrase.name"
-                                ></v-text-field>
+                                        v-model="prep.value"
+                                      ></v-textarea>
+                                    </v-list-item-content>
+                                  </v-list-item>
+                                </template>
                               </v-col>
-                            </v-row>
-                            <v-col cols="12" md="6">
-                              <template v-for="(prep, i) in phrase.preparation">
-                                <v-list-item :key="i" inactive>
-                                  <v-list-item-content style="color: black">
-                                    <v-textarea
-                                      filled
-                                      outlined
-                                      :prefix="i + 1 + '.'"
-                                      append-outer-icon="mdi-delete"
-                                      @click:append-outer="
-                                        ingredientMinusPrep(i, index)
-                                      "
-                                      rows="1"
-                                      auto-grow
-                                      v-model="prep.value"
-                                    ></v-textarea>
-                                  </v-list-item-content>
-                                </v-list-item>
-                              </template>
-                            </v-col>
-                            <v-col>
-                              <v-row justify="end">
-                                <v-btn text @click="ingredientPlusPrep(index)"
-                                  >További lépés hozzáadása
-                                  <v-icon dark right>add_box</v-icon></v-btn
-                                >
-                              </v-row>
-                            </v-col>
-                          </v-list>
-                        </v-card>
+                              <v-col>
+                                <v-row justify="end">
+                                  <v-btn text @click="ingredientPlusPrep(index)"
+                                    >További lépés hozzáadása
+                                    <v-icon dark right>add_box</v-icon></v-btn
+                                  >
+                                </v-row>
+                              </v-col>
+                            </v-card>
+                          </v-col>
+                        </v-row>
                       </template>
-                    </v-col>
-                    <v-row>
-                      <v-col>
-                        <v-btn outlined width="90%" @click="add_recipePhrase">
-                          Fázis hozzáadása</v-btn
-                        >
-                      </v-col>
-                    </v-row>
-                  </v-card>
-                  <v-divider />
-                  <v-card class="mt-5">
-                    <v-list>
-                      <!-- description -->
-
-                      <v-row justify="center">
-                        <v-col cols="6">
-                          <v-textarea
-                            filled
+                      <v-row>
+                        <v-col align="center">
+                          <v-btn
                             outlined
-                            rows="2"
-                            auto-grow
-                            label="Leírás"
-                            v-model="editingRecipe.description"
-                          ></v-textarea>
+                            width="100%"
+                            @click="add_recipePhrase"
+                          >
+                            Fázis hozzáadás
+                            <v-icon dark right>add_box</v-icon>
+                          </v-btn>
                         </v-col>
                       </v-row>
-                    </v-list>
+                    </v-col>
+                  </v-card>
+                </v-col>
+                <v-divider />
+                <v-card class="mt-5">
+                  <v-list>
+                    <!-- description -->
 
                     <v-row justify="center">
                       <v-col cols="6">
-                        <v-combobox
+                        <v-textarea
                           filled
-                          v-model="editingRecipe.tags"
                           outlined
-                          :search-input.sync="tagSearch"
-                          hide-selected
-                          label="Válassz ki jellemzőket a recepthez"
-                          multiple
-                          persistent-hint
-                          small-chips
-                        >
-                          <template v-slot:no-data>
-                            <v-list-item>
-                              <v-list-item-content>
-                                <v-list-item-title>
-                                  Nyomj <kbd>enter</kbd>-t hozzáadáshoz:
-                                  "<strong>{{ tagSearch }}</strong
-                                  >"
-                                </v-list-item-title>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-combobox>
-                      </v-col>
-                      <v-col cols="6" md="3">
-                        <v-select
-                          filled
-                          v-model="editingRecipe.peopleamount"
-                          :items="peopleamount"
-                          item-text="text"
-                          item-value="value"
-                          outlined
-                          label="Hány főre?"
-                        ></v-select>
+                          rows="2"
+                          auto-grow
+                          label="Leírás"
+                          v-model="editingRecipe.description"
+                        ></v-textarea>
                       </v-col>
                     </v-row>
-                    <v-row>
-                      <v-col class="grey--text darken-3"
-                        >Hozzáadva:
-                        {{ formatDate(editingRecipe.addedTime) }}</v-col
+                  </v-list>
+
+                  <v-row justify="center">
+                    <v-col cols="6">
+                      <v-combobox
+                        filled
+                        v-model="editingRecipe.tags"
+                        outlined
+                        :search-input.sync="tagSearch"
+                        hide-selected
+                        label="Válassz ki jellemzőket a recepthez"
+                        multiple
+                        persistent-hint
+                        small-chips
                       >
-                    </v-row>
-                  </v-card>
-                </v-col>
+                        <template v-slot:no-data>
+                          <v-list-item>
+                            <v-list-item-content>
+                              <v-list-item-title>
+                                Nyomj <kbd>enter</kbd>-t hozzáadáshoz: "<strong
+                                  >{{ tagSearch }}</strong
+                                >"
+                              </v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </template>
+                      </v-combobox>
+                    </v-col>
+                    <v-col cols="6" md="3">
+                      <v-select
+                        filled
+                        v-model="editingRecipe.peopleamount"
+                        :items="peopleamount"
+                        item-text="text"
+                        item-value="value"
+                        outlined
+                        label="Hány főre?"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="grey--text darken-3"
+                      >Hozzáadva:
+                      {{ formatDate(editingRecipe.addedTime) }}</v-col
+                    >
+                  </v-row>
+                </v-card>
               </v-card-text>
             </v-card>
           </v-dialog>
@@ -461,6 +481,9 @@ export default {
     };
   },
   methods: {
+    remove_recipephrase(index) {
+      this.editingRecipe.phrase.splice(index, 1);
+    },
     add_recipePhrase() {
       this.editingRecipe.phrase.push({
         name: null,
