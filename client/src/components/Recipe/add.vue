@@ -139,7 +139,6 @@
                     solo
                     label="Leírás"
                     v-model="recipe.description"
-                    :rules="[(v) => !!v || 'Kérlek töltsd ki!']"
                   ></v-textarea>
                 </v-col>
               </v-row>
@@ -232,7 +231,7 @@ export default {
         "Egyéb",
       ],
       recipe: {
-        name: "",
+        name: null,
         phrase: [
           {
             name: null,
@@ -243,7 +242,7 @@ export default {
                 unit: null,
               },
             ],
-            preparation: [{ value: "" }],
+            preparation: [{ value: null }],
           },
         ],
         description: "",

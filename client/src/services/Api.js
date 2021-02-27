@@ -1,11 +1,9 @@
 import axios from "axios";
 // import router from "../router";
 // import store from "../store";
-//kecskemacska.duckdns.org:2078  //MOBILE
-//http://192.168.0.250:3000/api  //PC
 
 const instance = axios.create({
-  baseURL: "http://192.168.0.250:3000/api",
+  baseURL: process.env.VUE_APP_dev_api_url,
   timeout: 10000,
   params: {}, // do not remove this, its added to add params later in the config
   headers: {
